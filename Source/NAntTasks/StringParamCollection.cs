@@ -16,22 +16,26 @@ namespace broloco.NAntTasks
         /// <summary>
         /// Type safe indexer
         /// </summary>
-        public StringParam this[int idx] {
+        public StringParam this[int idx]
+        {
             get { return (StringParam) List[idx]; }
         }
 
         /// <summary>
         /// Type safe Add
         /// </summary>
-        public void Add(StringParam stringParam) {
+        public void Add(StringParam stringParam)
+        {
             List.Add(stringParam);
         }
 
         /// <summary>
         /// Type safe Add
         /// </summary>
-        public void Add(StringParamCollection stringParams) {
-            foreach (StringParam stringParam in stringParams) {
+        public void Add(StringParamCollection stringParams)
+        {
+            foreach (StringParam stringParam in stringParams)
+            {
                 this.Add(stringParam);
             }
         }

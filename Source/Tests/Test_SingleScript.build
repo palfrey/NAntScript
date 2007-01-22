@@ -5,13 +5,18 @@
 
         <stringparams>
             <stringparam name="stringParam1" />
+            <stringparam name="stringParam2" required="false" />
+            <stringparam name="stringParam3" required="true" />
         </stringparams>
 
         <nodeparams>
             <nodeparam name="nodeParam1" />
+            <nodeparam name="nodeParam2" required="false" />
+            <nodeparam name="nodeParam3" required="true" />
         </nodeparams>
 
         <do>
+            <someXml/>
         </do>
 
     </taskdef>
