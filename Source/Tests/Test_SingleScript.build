@@ -19,6 +19,10 @@
             <property name="sp1Value" value="__stringParam1__" />
             <property name="sp2Value" value="__stringParam2__" />
             <property name="sp3Value" value="__stringParam3__" />
+
+            <__nodeParam1__/>
+            <__nodeParam2__/>
+            <__nodeParam3__/>
         </do>
 
     </taskdef>
@@ -30,20 +34,26 @@
     <property name="sp2Value" value="" />
     <property name="sp3Value" value="" />
 
+    <property name="np1Value" value="" />
+    <property name="np2Value" value="" />
+    <property name="np3Value" value="" />
+    <property name="np4Value" value="" />
+
     <testTask   stringParam1="test1"
                 stringParam2="test2"
                 stringParam3="test3">
 
         <nodeParam1>
-            <p1/>
+            <property name="np1Value" value="test1" />
         </nodeParam1>
 
         <nodeParam2>
-            <p2/>
+            <property name="np2Value" value="test2" />
         </nodeParam2>
 
         <nodeParam3>
-            <p3/>
+            <property name="np3Value" value="test3" />
+            <property name="np4Value" value="test4" />
         </nodeParam3>
 
     </testTask>
@@ -60,17 +70,38 @@
         <fail message="sp3Value: expected 'test3' got '${sp3Value}'" />
     </if>
 
+    <if test="${np1Value != 'test1'}" >
+        <fail message="np1Value: expected 'test1' got '${np1Value}'" />
+    </if>
+
+    <if test="${np2Value != 'test2'}" >
+        <fail message="np2Value: expected 'test2' got '${np2Value}'" />
+    </if>
+
+    <if test="${np3Value != 'test3'}" >
+        <fail message="np3Value: expected 'test3' got '${np3Value}'" />
+    </if>
+
+    <if test="${np4Value != 'test4'}" >
+        <fail message="np4Value: expected 'test4' got '${np4Value}'" />
+    </if>
+
+    <property name="testTaskRun" value="" />
+
     <testTask   stringParam1="test1"
                 stringParam3="test3">
 
         <nodeParam1>
-            <p1/>
         </nodeParam1>
 
         <nodeParam3>
-            <p3/>
+            <property name="testTaskRun" value="Check we can miss out non-required parameters" />
         </nodeParam3>
 
     </testTask>
+
+    <if test="${testTaskRun != 'Check we can miss out non-required parameters'}" >
+        <fail message="testTaskRun: expected 'Check we can miss out non-required parameters' got '${testTaskRun}'" />
+    </if>
 
 </project>

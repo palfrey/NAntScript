@@ -94,7 +94,7 @@ namespace broloco.NAntTasks
             // generate named string parameters
             foreach (StringParam stringParam in StringParams)
             {
-                customTaskCode +=  "    private string _" + stringParam.ParameterName + ";\n";
+                customTaskCode +=  "    private string _" + stringParam.ParameterName + " = string.Empty ;\n";
                 customTaskCode +=  "\n";
                 customTaskCode +=  "    [TaskAttribute(\"" + stringParam.ParameterName + "\", Required=" + stringParam.Required.ToString().ToLower() + ")]\n";
                 customTaskCode +=  "    public string " + stringParam.ParameterName + "\n";
@@ -130,6 +130,12 @@ namespace broloco.NAntTasks
             foreach (StringParam stringParam in StringParams)
             {
                 customTaskCode +=  "        xml = xml.Replace(\"__" + stringParam.ParameterName + "__\", " + stringParam.ParameterName + ");\n";
+            }
+
+            // generate string replacements for each nodeParam
+            foreach (NodeParam nodeParam in NodeParams)
+            {
+                customTaskCode +=  "        xml = xml.Replace(\"<__" + nodeParam.ParameterName + "__ />\", (" + nodeParam.ParameterName + " == null) ? string.Empty : " + nodeParam.ParameterName + ".Xml.InnerXml);\n";
             }
 
             customTaskCode +=  "        Log(Level.Verbose, \"Generated script: \" + xml);\n";
