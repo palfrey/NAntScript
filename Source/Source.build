@@ -28,6 +28,7 @@
                 doc="${build.dir}/bin/broloco.NAntTasks.xml">
 
             <references>
+                <include name="${nant::get-base-directory()}/NAnt.Core.dll" />
             </references>
 
             <sources>

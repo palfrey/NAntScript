@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="Test_SingleScript">
 
-    <taskdef name="runTest">
+    <taskdef name="testTask">
 
         <stringparams>
             <stringparam name="stringParam1" />

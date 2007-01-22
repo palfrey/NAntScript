@@ -5,7 +5,7 @@
 
         <loadtasks assembly="${build.dir}/bin/broloco.NAntTasks.dll" />
 
-        <!-- Ingore - <nant buildfile="Test_SingleScript.build" /> -->
+        <nant buildfile="Test_SingleScript.build" />
 
     </target>
 
