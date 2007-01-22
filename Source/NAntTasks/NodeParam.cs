@@ -22,7 +22,7 @@ namespace broloco.NAntTasks
         /// The parameter name.
         /// </summary>
         [TaskAttribute("name", Required=true)]
-        public string ParamName
+        public string ParameterName
         {
             get { return _parameterName; }
             set { _parameterName = value; }

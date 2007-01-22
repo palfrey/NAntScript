@@ -1,5 +1,6 @@
 
 using System;
+using System.Xml;
 
 using NAnt.Core;
 using NAnt.Core.Attributes;
@@ -76,6 +77,60 @@ namespace broloco.NAntTasks
         /// </summary>
         protected override void ExecuteTask()
         {
+            Log(Level.Info, "Creating task " + _tagName);
+
+            // Generate code for the custom task as a script task ...
+            Log(Level.Verbose, "*** Custom code start ***");
+            string customTaskCode = "";
+            customTaskCode +=  "<script language='C#' >\n";
+            customTaskCode +=  "<imports> <import namespace=\"System.Xml\" /> <import namespace=\"NAnt.Core.Types\" /> </imports> <code> <![CDATA[\n";
+            customTaskCode +=  "[TaskName(\"" + _tagName + "\")]\n";
+            customTaskCode +=  "public class " + _tagName + " : Task\n";
+            customTaskCode +=  "{\n";
+            customTaskCode +=  "\n";
+            customTaskCode +=  "    static private string _originalXml = XmlConvert.DecodeName(\"" + XmlConvert.EncodeLocalName(_tasks.Xml.OuterXml) + "\");\n";
+            customTaskCode +=  "\n";
+
+            // generate named string parameters
+            foreach (StringParam stringParam in StringParams)
+            {
+                customTaskCode +=  "    private string _" + stringParam.ParameterName + ";\n";
+                customTaskCode +=  "\n";
+                customTaskCode +=  "    [TaskAttribute(\"" + stringParam.ParameterName + "\", Required=" + stringParam.Required.ToString().ToLower() + ")]\n";
+                customTaskCode +=  "    public string " + stringParam.ParameterName + "\n";
+                customTaskCode +=  "    {\n";
+                customTaskCode +=  "        get { return _" + stringParam.ParameterName + "; }\n";
+                customTaskCode +=  "        set { _" + stringParam.ParameterName + " = value; }\n";
+                customTaskCode +=  "    }\n";
+                customTaskCode +=  "\n";
+            }
+
+            // generate named xml-node parameters
+            foreach (NodeParam nodeParam in NodeParams)
+            {
+                customTaskCode +=  "    private RawXml _" + nodeParam.ParameterName + ";\n";
+                customTaskCode +=  "\n";
+                customTaskCode +=  "    [BuildElement(\"" + nodeParam.ParameterName + "\", Required=" + nodeParam.Required.ToString().ToLower() + ")]\n";
+                customTaskCode +=  "    public RawXml " + nodeParam.ParameterName + "\n";
+                customTaskCode +=  "    {\n";
+                customTaskCode +=  "        get { return _" + nodeParam.ParameterName + "; }\n";
+                customTaskCode +=  "        set { _" + nodeParam.ParameterName + " = value; }\n";
+                customTaskCode +=  "    }\n";
+                customTaskCode +=  "\n";
+            }
+
+            customTaskCode +=  "    protected override void ExecuteTask()\n";
+            customTaskCode +=  "    {\n";
+            customTaskCode +=  "    }\n";
+            customTaskCode +=  "}\n";
+            customTaskCode += "]]" + "></code></script>";
+
+            Log(Level.Verbose, customTaskCode);
+            Log(Level.Verbose, "*** Custom code end ***");
+
+            XmlDocument xmlScriptTask = new XmlDocument();
+            xmlScriptTask.LoadXml(customTaskCode);
+            Project.CreateTask(xmlScriptTask.ChildNodes[0]).Execute();
         }
 
     }
