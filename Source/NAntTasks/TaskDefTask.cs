@@ -121,6 +121,28 @@ namespace broloco.NAntTasks
 
             customTaskCode +=  "    protected override void ExecuteTask()\n";
             customTaskCode +=  "    {\n";
+
+            customTaskCode +=  "        Log(Level.Info, \"Running custom script\");\n";
+            customTaskCode +=  "        Log(Level.Verbose, \"Original script : \" + _originalXml);\n";
+            customTaskCode +=  "        string xml = _originalXml;\n";
+
+            // generate string replacements for each stringParam
+            foreach (StringParam stringParam in StringParams)
+            {
+                customTaskCode +=  "        xml = xml.Replace(\"__" + stringParam.ParameterName + "__\", " + stringParam.ParameterName + ");\n";
+            }
+
+            customTaskCode +=  "        Log(Level.Verbose, \"Generated script: \" + xml);\n";
+            customTaskCode +=  "        XmlDocument scriptDom = new XmlDocument();\n";
+            customTaskCode +=  "        scriptDom.LoadXml(xml);\n";
+            customTaskCode +=  "        foreach (XmlNode node in scriptDom.ChildNodes[0].ChildNodes)\n";
+            customTaskCode +=  "        {\n";
+            customTaskCode +=  "            if (node.Name == \"#comment\")\n";
+            customTaskCode +=  "                continue;\n";
+            customTaskCode +=  "            Log(Level.Verbose, \"Running task: \" + node.OuterXml);\n";
+            customTaskCode +=  "            Project.CreateTask(node).Execute();\n";
+            customTaskCode +=  "        }\n";
+
             customTaskCode +=  "    }\n";
             customTaskCode +=  "}\n";
             customTaskCode += "]]" + "></code></script>";

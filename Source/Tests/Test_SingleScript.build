@@ -16,7 +16,9 @@
         </nodeparams>
 
         <do>
-            <someXml/>
+            <property name="sp1Value" value="__stringParam1__" />
+            <property name="sp2Value" value="__stringParam2__" />
+            <property name="sp3Value" value="__stringParam3__" />
         </do>
 
     </taskdef>
@@ -45,6 +47,18 @@
         </nodeParam3>
 
     </testTask>
+
+    <if test="${sp1Value != 'test1'}" >
+        <fail message="sp1Value: expected 'test1' got '${sp1Value}'" />
+    </if>
+
+    <if test="${sp2Value != 'test2'}" >
+        <fail message="sp2Value: expected 'test2' got '${sp2Value}'" />
+    </if>
+
+    <if test="${sp3Value != 'test3'}" >
+        <fail message="sp3Value: expected 'test3' got '${sp3Value}'" />
+    </if>
 
     <testTask   stringParam1="test1"
                 stringParam3="test3">
