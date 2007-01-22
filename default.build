@@ -11,16 +11,34 @@
     <!-- debug build by default -->
     <call target="debug" />
 
-    <target name="debug">
-    </target>
-
-    <target name="release">
-    </target>
-
     <target name="build">
 
-        <echo message="build"/>
+        <mkdir dir="${build.dir}/bin" />
 
+        <nant buildfile="Source\Source.build"           inheritall="true"   target="build"/>
+
+    </target>
+
+    <target name="clean">
+
+        <nant buildfile="Source\Source.build"           inheritall="true"   target="clean"/>
+
+        <delete dir="${build.dir}" failonerror="false" />
+
+    </target>
+
+    <target name="debug" description="Setup a 'debug' build">
+        <property name="optimize" value="false" />
+        <property name="project.config" value="debug" />
+        <property name="build.debug" value="true" />
+        <property name="build.dir" value="${project::get-base-directory()}/build_${project.config}" />
+    </target>
+
+    <target name="release" description="Setup a 'release' build">
+        <property name="optimize" value="true" />
+        <property name="project.config" value="release" />
+        <property name="build.debug" value="false" />
+        <property name="build.dir" value="${project::get-base-directory()}/build_${project.config}" />
     </target>
 
 </project>
