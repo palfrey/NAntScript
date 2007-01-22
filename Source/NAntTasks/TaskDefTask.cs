@@ -132,15 +132,28 @@ namespace broloco.NAntTasks
                 customTaskCode +=  "        xml = xml.Replace(\"__" + stringParam.ParameterName + "__\", " + stringParam.ParameterName + ");\n";
             }
 
-            // generate string replacements for each nodeParam
-            foreach (NodeParam nodeParam in NodeParams)
-            {
-                customTaskCode +=  "        xml = xml.Replace(\"<__" + nodeParam.ParameterName + "__ />\", (" + nodeParam.ParameterName + " == null) ? string.Empty : " + nodeParam.ParameterName + ".Xml.InnerXml);\n";
-            }
-
-            customTaskCode +=  "        Log(Level.Verbose, \"Generated script: \" + xml);\n";
             customTaskCode +=  "        XmlDocument scriptDom = new XmlDocument();\n";
             customTaskCode +=  "        scriptDom.LoadXml(xml);\n";
+
+            // generate string replacements for each nodeParam
+            customTaskCode +=  "        XmlNodeList nodes;\n";
+            foreach (NodeParam nodeParam in NodeParams)
+            {
+                customTaskCode +=  "        nodes = scriptDom.SelectNodes(\"//__"  + nodeParam.ParameterName + "__\");\n";
+                customTaskCode +=  "        foreach (XmlNode node in nodes)\n";
+                customTaskCode +=  "        {\n";
+                customTaskCode +=  "            if (" + nodeParam.ParameterName + " != null)\n";
+                customTaskCode +=  "            {\n";
+                customTaskCode +=  "                foreach (XmlNode task in " + nodeParam.ParameterName + ".Xml.ChildNodes)\n";
+                customTaskCode +=  "                {\n";
+                customTaskCode +=  "                    node.ParentNode.InsertBefore(scriptDom.ImportNode(task, true), node);\n";
+                customTaskCode +=  "                }\n";
+                customTaskCode +=  "            }\n";
+                customTaskCode +=  "            node.ParentNode.RemoveChild(node);\n";
+                customTaskCode +=  "        }\n";
+            }
+
+            customTaskCode +=  "        Log(Level.Verbose, \"Generated script: \" + scriptDom.InnerXml);\n";
             customTaskCode +=  "        foreach (XmlNode node in scriptDom.ChildNodes[0].ChildNodes)\n";
             customTaskCode +=  "        {\n";
             customTaskCode +=  "            if (node.Name == \"#comment\")\n";
