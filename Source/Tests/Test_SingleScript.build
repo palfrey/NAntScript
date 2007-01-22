@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<project name="Test_SingleScript">
+
+    <taskdef name="runTest">
+
+        <stringparams>
+            <stringparam name="stringParam1" />
+        </stringparams>
+
+        <nodeparams>
+            <nodeparam name="nodeParam1" />
+        </nodeparams>
+
+        <do>
+        </do>
+
+    </taskdef>
+
+</project>

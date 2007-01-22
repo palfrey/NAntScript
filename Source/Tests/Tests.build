@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<project name="Tests" default="none">
+
+    <target name="build">
+
+        <!-- Ignore - <loadtasks assembly="${build.dir}/bin/broloco.NAntTasks.dll" /> -->
+
+        <!-- Ingore - <nant buildfile="Test_SingleScript.build" /> -->
+
+    </target>
+
+
+    <target name="clean">
+
+    </target>
+
+
+</project>
