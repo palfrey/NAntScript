@@ -3,6 +3,39 @@
 
     <target name="build">
 
+        <asminfo output="NAntTasks/AssemblyInfo.cs" language="CSharp">
+            <imports>
+                <import namespace="System.Reflection" />
+            </imports>
+            <attributes>
+                <attribute type="AssemblyTitleAttribute" value="broloco NAntTasks" />
+                <attribute type="AssemblyDescriptionAttribute" value="broloco NAntTasks" />
+                <attribute type="AssemblyConfigurationAttribute" value="" />
+                <attribute type="AssemblyCompanyAttribute" value="broloco" />
+                <attribute type="AssemblyProductAttribute" value="broloco" />
+                <attribute type="AssemblyCopyrightAttribute" value="" />
+                <attribute type="AssemblyTrademarkAttribute" value="" />
+                <attribute type="AssemblyVersionAttribute" value="${project.version}" />
+                <attribute type="AssemblyDelaySignAttribute" value="false" />
+            </attributes>
+        </asminfo>
+
+        <csc    target="library"
+                debug="${build.debug}"
+                optimize="${optimize}"
+                output="${build.dir}/bin/broloco.NAntTasks.dll"
+                warnaserror="true"
+                doc="${build.dir}/bin/broloco.NAntTasks.xml">
+
+            <references>
+            </references>
+
+            <sources>
+                <include name="NAntTasks/*.cs" />
+            </sources>
+
+        </csc>
+
         <nant buildfile="Tests\Tests.build" inheritall="true"   target="build"/>
 
     </target>
@@ -11,6 +44,8 @@
     <target name="clean">
 
         <nant buildfile="Tests\Tests.build" inheritall="true"   target="clean"/>
+
+        <delete file="NAntTasks/AssemblyInfo.cs" />
 
     </target>
 

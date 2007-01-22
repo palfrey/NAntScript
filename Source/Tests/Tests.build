@@ -3,7 +3,7 @@
 
     <target name="build">
 
-        <!-- Ignore - <loadtasks assembly="${build.dir}/bin/broloco.NAntTasks.dll" /> -->
+        <loadtasks assembly="${build.dir}/bin/broloco.NAntTasks.dll" />
 
         <!-- Ingore - <nant buildfile="Test_SingleScript.build" /> -->
 
