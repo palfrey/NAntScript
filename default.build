@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<project name="NAntScript" default="build">
+
+    <echo message="Using '${nant.settings.currentframework}' framework on '${platform::get-name()}' platform." />
+
+    <!-- global project settings -->
+    <property name="nant.settings.currentframework"     value="net-2.0" />
+
+    <property name="project.version" value="0.0.0.1" overwrite="false" />
+
+    <!-- debug build by default -->
+    <call target="debug" />
+
+    <target name="debug">
+    </target>
+
+    <target name="release">
+    </target>
+
+    <target name="build">
+
+        <echo message="build"/>
+
+    </target>
+
+</project>
