@@ -126,12 +126,6 @@ namespace broloco.NAntTasks
             customTaskCode +=  "        Log(Level.Verbose, \"Original script : \" + _originalXml);\n";
             customTaskCode +=  "        string xml = _originalXml;\n";
 
-            // generate string replacements for each stringParam
-            foreach (StringParam stringParam in StringParams)
-            {
-                customTaskCode +=  "        xml = xml.Replace(\"__" + stringParam.ParameterName + "__\", " + stringParam.ParameterName + ");\n";
-            }
-
             customTaskCode +=  "        XmlDocument scriptDom = new XmlDocument();\n";
             customTaskCode +=  "        scriptDom.LoadXml(xml);\n";
 
@@ -152,6 +146,14 @@ namespace broloco.NAntTasks
                 customTaskCode +=  "            node.ParentNode.RemoveChild(node);\n";
                 customTaskCode +=  "        }\n";
             }
+
+            // generate string replacements for each stringParam
+            customTaskCode +=  "        xml = scriptDom.OuterXml;\n";
+            foreach (StringParam stringParam in StringParams)
+            {
+                customTaskCode +=  "        xml = xml.Replace(\"__" + stringParam.ParameterName + "__\", " + stringParam.ParameterName + ");\n";
+            }
+            customTaskCode +=  "        scriptDom.LoadXml(xml);\n";
 
             customTaskCode +=  "        Log(Level.Verbose, \"Generated script: \" + scriptDom.InnerXml);\n";
             customTaskCode +=  "        foreach (XmlNode node in scriptDom.ChildNodes[0].ChildNodes)\n";

@@ -52,7 +52,7 @@
         </nodeParam2>
 
         <nodeParam3>
-            <property name="np3Value" value="test3" />
+            <property name="np3Value" value="__stringParam1__.test3" />
             <property name="np4Value" value="test4" />
         </nodeParam3>
 
@@ -78,8 +78,8 @@
         <fail message="np2Value: expected 'test2' got '${np2Value}'" />
     </if>
 
-    <if test="${np3Value != 'test3'}" >
-        <fail message="np3Value: expected 'test3' got '${np3Value}'" />
+    <if test="${np3Value != 'test1.test3'}" >
+        <fail message="np3Value: expected 'test1.test3' got '${np3Value}'" />
     </if>
 
     <if test="${np4Value != 'test4'}" >
