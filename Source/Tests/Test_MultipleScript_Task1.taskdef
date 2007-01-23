@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<project name="Test_MultipleScript_Task1">
+
+    <!-- create a task -->
+    <taskdef name="testTask1">
+
+        <stringparams>
+            <stringparam name="stringParam1" />
+            <stringparam name="stringParam2" required="false" />
+            <stringparam name="stringParam3" required="true" />
+        </stringparams>
+
+        <nodeparams>
+            <nodeparam name="nodeParam1" />
+            <nodeparam name="nodeParam2" required="false" />
+            <nodeparam name="nodeParam3" required="true" />
+        </nodeparams>
+
+        <do>
+            <property name="sp1Value" value="__stringParam1__" />
+            <property name="sp2Value" value="__stringParam2__" />
+            <property name="sp3Value" value="__stringParam3__" />
+
+            <__nodeParam1__/>
+            <__nodeParam2__/>
+            <__nodeParam3__/>
+        </do>
+
+    </taskdef>
+
+    <!-- create a second task -->
+    <taskdef name="testTask1.1">
+
+        <stringparams>
+            <stringparam name="stringParam1" />
+        </stringparams>
+
+        <do>
+            <property name="sp1Value" value="__stringParam1__" />
+        </do>
+
+    </taskdef>
+
+</project>

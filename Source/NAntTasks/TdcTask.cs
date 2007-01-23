@@ -55,6 +55,9 @@ namespace broloco.NAntTasks
         /// </summary>
         protected override void ExecuteTask()
         {
+            foreach (string fileName in Sources.FileNames)
+            {
+            }
         }
 
     }
