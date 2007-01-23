@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<project name="Test_MultipleScript">
+
+    <tdc output="CompiledMultipleScripts.dll" >
+        <sources>
+            <include name="Test_MultipleScript_Task1.taskdef" />
+            <include name="Test_MultipleScript_Task2.taskdef" />
+        </sources>
+    </tdc>
+
+</project>
