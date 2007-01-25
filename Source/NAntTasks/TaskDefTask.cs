@@ -73,17 +73,12 @@ namespace broloco.NAntTasks
         }
 
         /// <summary>
-        /// Executes the taskdef task.
+        /// Generates C# code for the task
         /// </summary>
-        protected override void ExecuteTask()
+        public string GenerateCSharpCode()
         {
-            Log(Level.Info, "Creating task " + _tagName);
-
-            // Generate code for the custom task as a script task ...
-            Log(Level.Verbose, "*** Custom code start ***");
             string customTaskCode = "";
-            customTaskCode +=  "<script language='C#' >\n";
-            customTaskCode +=  "<imports> <import namespace=\"System.Xml\" /> <import namespace=\"NAnt.Core.Types\" /> </imports> <code> <![CDATA[\n";
+
             customTaskCode +=  "[TaskName(\"" + _tagName + "\")]\n";
             customTaskCode +=  "public class " + _tagName + " : Task\n";
             customTaskCode +=  "{\n";
@@ -166,6 +161,23 @@ namespace broloco.NAntTasks
 
             customTaskCode +=  "    }\n";
             customTaskCode +=  "}\n";
+
+            return customTaskCode;
+        }
+
+        /// <summary>
+        /// Executes the taskdef task.
+        /// </summary>
+        protected override void ExecuteTask()
+        {
+            Log(Level.Info, "Creating task " + _tagName);
+
+            // Generate code for the custom task as a script task ...
+            Log(Level.Verbose, "*** Custom code start ***");
+            string customTaskCode = "";
+            customTaskCode +=  "<script language='C#' >\n";
+            customTaskCode +=  "<imports> <import namespace=\"System.Xml\" /> <import namespace=\"NAnt.Core.Types\" /> </imports> <code> <![CDATA[\n";
+            customTaskCode += GenerateCSharpCode();
             customTaskCode += "]]" + "></code></script>";
 
             Log(Level.Verbose, customTaskCode);

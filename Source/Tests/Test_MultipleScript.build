@@ -14,7 +14,6 @@
         <fail message="assembly not created" />
     </if>
 
-<!--
     <property name="sp1Value" value="" />
     <property name="sp2Value" value="" />
     <property name="sp3Value" value="" />
@@ -70,6 +69,21 @@
     <if test="${np4Value != 'test4'}" >
         <fail message="np4Value: expected 'test4' got '${np4Value}'" />
     </if>
--->
+
+    <property name="sp1Value" value="" />
+
+    <testTask1_1 stringParam1="test1.1" />
+
+    <if test="${sp1Value != 'test1.1'}" >
+        <fail message="sp1Value: expected 'test1.1' got '${sp1Value}'" />
+    </if>
+
+    <property name="sp1Value" value="" />
+
+    <testTask2 stringParam1="test2" />
+
+    <if test="${sp1Value != 'test2'}" >
+        <fail message="sp1Value: expected 'test2' got '${sp1Value}'" />
+    </if>
 
 </project>

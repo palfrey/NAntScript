@@ -29,7 +29,7 @@
     </taskdef>
 
     <!-- create a second task -->
-    <taskdef name="testTask1.1">
+    <taskdef name="testTask1_1">
 
         <stringparams>
             <stringparam name="stringParam1" />

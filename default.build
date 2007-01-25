@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <project name="NAntScript" default="build">
 
+    <property name="nant.settings.currentframework" value="net-2.0" />
     <echo message="Using '${nant.settings.currentframework}' framework on '${platform::get-name()}' platform." />
 
     <property name="project.version" value="0.0.0.1" overwrite="false" />

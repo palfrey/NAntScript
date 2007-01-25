@@ -58,6 +58,8 @@ namespace broloco.NAntTasks
             CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
             CompilerParameters parameters = new CompilerParameters();
             parameters.OutputAssembly = Output;
+            parameters.ReferencedAssemblies.Add(Project.GetType().Assembly.Location);
+            parameters.ReferencedAssemblies.Add(typeof(XmlDocument).Assembly.Location);
             CompilerResults results = provider.CompileAssemblyFromSource(parameters, new string[] { source });
 
             if (results.Errors.Count > 0)
@@ -77,7 +79,10 @@ namespace broloco.NAntTasks
         /// </summary>
         protected override void ExecuteTask()
         {
-            string source = "";
+            string source =   "using System.Xml;\n"
+                            + "using NAnt.Core;\n"
+                            + "using NAnt.Core.Attributes;\n"
+                            + "using NAnt.Core.Types;\n";
 
             foreach (string fileName in Sources.FileNames)
             {
@@ -87,9 +92,8 @@ namespace broloco.NAntTasks
                 foreach (XmlNode taskXml in tasksXml.SelectNodes("/*/taskdef"))
                 {
                     TaskDefTask taskDef = (TaskDefTask) Project.CreateTask(taskXml);
-                    break;
+                    source += taskDef.GenerateCSharpCode() + "\n";
                 }
-                break;
             }
 
             CompileSource(source);
