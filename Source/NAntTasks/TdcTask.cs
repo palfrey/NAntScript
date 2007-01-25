@@ -1,5 +1,6 @@
 
 using System;
+using System.CodeDom.Compiler;
 using System.Xml;
 
 using NAnt.Core;
@@ -50,6 +51,25 @@ namespace broloco.NAntTasks
             set { _sources = value; }
         }
 
+        private void CompileSource(string source)
+        {
+            CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
+            CompilerParameters parameters = new CompilerParameters();
+            parameters.OutputAssembly = Output;
+            CompilerResults results = provider.CompileAssemblyFromSource(parameters, new string[] { source });
+
+            if (results.Errors.Count > 0)
+            {
+                string errors = "Compiler error:" + Environment.NewLine;
+                foreach (CompilerError err in results.Errors)
+                {
+                    errors += err.ToString() + Environment.NewLine;
+                }
+                errors += source;
+                throw new BuildException(errors, Location);
+            }
+        }
+
         /// <summary>
         /// Executes the tdc task.
         /// </summary>
@@ -58,6 +78,9 @@ namespace broloco.NAntTasks
             foreach (string fileName in Sources.FileNames)
             {
             }
+
+            string source = "public class tst {}";
+            CompileSource(source);
         }
 
     }

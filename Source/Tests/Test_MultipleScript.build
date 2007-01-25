@@ -1,11 +1,19 @@
 <?xml version="1.0"?>
 <project name="Test_MultipleScript">
 
-    <tdc output="CompiledMultipleScripts.dll" >
+    <delete file="${build.dir}/CompiledMultipleScripts.dll" />
+
+    <tdc output="${build.dir}/CompiledMultipleScripts.dll" >
         <sources>
             <include name="Test_MultipleScript_Task1.taskdef" />
             <include name="Test_MultipleScript_Task2.taskdef" />
         </sources>
     </tdc>
+
+    <if test="${not file::is-assembly(build.dir + '/CompiledMultipleScripts.dll')}" >
+        <fail message="assembly not created" />
+    </if>
+
+    <delete file="${build.dir}/CompiledMultipleScripts.dll" />
 
 </project>
