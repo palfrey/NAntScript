@@ -125,7 +125,8 @@ namespace broloco.NAntTasks
             customTaskCode +=  "        scriptDom.LoadXml(xml);\n";
 
             // generate string replacements for each nodeParam
-            customTaskCode +=  "        XmlNodeList nodes;\n";
+            if (NodeParams.Count > 0)
+                customTaskCode +=  "        XmlNodeList nodes;\n";
             foreach (NodeParam nodeParam in NodeParams)
             {
                 customTaskCode +=  "        nodes = scriptDom.SelectNodes(\"//__"  + nodeParam.ParameterName + "__\");\n";

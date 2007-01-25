@@ -53,6 +53,20 @@ namespace broloco.NAntTasks
             set { _sources = value; }
         }
 
+        private bool IsOutputUpToDate()
+        {
+            string tmpPropertyName = "__tdcTemporaryProperty";
+            UpToDateTask upToDateTask = new UpToDateTask();
+            upToDateTask.Project = Project;
+            upToDateTask.PropertyName = tmpPropertyName;
+            upToDateTask.SourceFiles = Sources;
+            upToDateTask.TargetFiles = new FileSet();
+            upToDateTask.TargetFiles.Includes.Add(Output);
+            upToDateTask.Execute();
+
+            return Convert.ToBoolean(Project.Properties[tmpPropertyName]);
+        }
+
         private void CompileSource(string source)
         {
             CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
@@ -79,24 +93,27 @@ namespace broloco.NAntTasks
         /// </summary>
         protected override void ExecuteTask()
         {
-            string source =   "using System.Xml;\n"
-                            + "using NAnt.Core;\n"
-                            + "using NAnt.Core.Attributes;\n"
-                            + "using NAnt.Core.Types;\n";
-
-            foreach (string fileName in Sources.FileNames)
+            if (!IsOutputUpToDate())
             {
-                XmlDocument tasksXml = new XmlDocument();
-                tasksXml.Load(fileName);
+                string source =   "using System.Xml;\n"
+                                + "using NAnt.Core;\n"
+                                + "using NAnt.Core.Attributes;\n"
+                                + "using NAnt.Core.Types;\n";
 
-                foreach (XmlNode taskXml in tasksXml.SelectNodes("/*/taskdef"))
+                foreach (string fileName in Sources.FileNames)
                 {
-                    TaskDefTask taskDef = (TaskDefTask) Project.CreateTask(taskXml);
-                    source += taskDef.GenerateCSharpCode() + "\n";
-                }
-            }
+                    XmlDocument tasksXml = new XmlDocument();
+                    tasksXml.Load(fileName);
 
-            CompileSource(source);
+                    foreach (XmlNode taskXml in tasksXml.SelectNodes("/*/taskdef"))
+                    {
+                        TaskDefTask taskDef = (TaskDefTask) Project.CreateTask(taskXml);
+                        source += taskDef.GenerateCSharpCode() + "\n";
+                    }
+                }
+
+                CompileSource(source);
+            }
 
             LoadTasksTask loadTasksTask = new LoadTasksTask();
             loadTasksTask.Project = Project;

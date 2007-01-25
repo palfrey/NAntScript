@@ -86,4 +86,11 @@
         <fail message="sp1Value: expected 'test2' got '${sp1Value}'" />
     </if>
 
+    <tdc output="${path::get-temp-path()}/CompiledMultipleScripts.dll" >
+        <sources>
+            <include name="Test_MultipleScript_Task1.taskdef" />
+            <include name="Test_MultipleScript_Task2.taskdef" />
+        </sources>
+    </tdc>
+
 </project>
