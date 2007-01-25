@@ -39,6 +39,46 @@
 
         <nant buildfile="Tests\Tests.build" inheritall="true"   target="build"/>
 
+        <ndoc>
+            <assemblies basedir="${build.dir}/bin">
+                <include name="broloco.NAntTasks.dll" />
+            </assemblies>
+            <documenters>
+                <documenter name="NAnt">
+                    <property name="OutputDirectory" value="${build.dir}/doc/help" />
+                    <property name="SdkDocVersion" value="SDK_v1_1" />
+                    <property name="SdkLinksOnWeb" value="false" />
+                    <!-- set base uri used for linking to other NAnt docs -->
+                    <property name="NAntBaseUri" value="http://nant.sourceforge.net/release/latest/help/" />
+                    <!-- do not filter on namespace -->
+                    <property name="NamespaceFilter" value="" />
+                    <!-- set the name and version of the product for which docs are generated -->
+                    <property name="ProductName" value="NAntScript" />
+                    <property name="ProductVersion" value="${project.version}" />
+                    <property name="ProductUrl" value="http://code.google.com/p/nantscript" />
+                    <property name="Preliminary" value="${not(project.config == 'release')}" />
+                    <property name="DocumentAttributes" value="True" />
+                    <property name="IncludeAssemblyVersion" value="True" />
+                    <property name="ShowMissingParams" value="True" />
+                    <property name="ShowMissingReturns" value="True" />
+                    <property name="ShowMissingValues" value="True" />
+                </documenter>
+            </documenters>
+        </ndoc>
+
+        <delete dir="${build.dir}/doc/help/elements" />
+        <delete dir="${build.dir}/doc/help/enums" />
+        <delete dir="${build.dir}/doc/help/filters" />
+        <delete dir="${build.dir}/doc/help/functions" />
+        <delete dir="${build.dir}/doc/help/types" />
+
+        <copy todir="${build.dir}/doc">
+            <fileset basedir="doc">
+                <exclude name="**/.svn/**" />
+                <include name="**" />
+            </fileset>
+        </copy>
+
     </target>
 
 
