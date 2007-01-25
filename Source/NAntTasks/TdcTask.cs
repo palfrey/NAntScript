@@ -1,10 +1,12 @@
 
 using System;
 using System.CodeDom.Compiler;
+using System.IO;
 using System.Xml;
 
 using NAnt.Core;
 using NAnt.Core.Attributes;
+using NAnt.Core.Tasks;
 using NAnt.Core.Types;
 
 namespace broloco.NAntTasks
@@ -75,12 +77,27 @@ namespace broloco.NAntTasks
         /// </summary>
         protected override void ExecuteTask()
         {
+            string source = "";
+
             foreach (string fileName in Sources.FileNames)
             {
+                XmlDocument tasksXml = new XmlDocument();
+                tasksXml.Load(fileName);
+
+                foreach (XmlNode taskXml in tasksXml.SelectNodes("/*/taskdef"))
+                {
+                    TaskDefTask taskDef = (TaskDefTask) Project.CreateTask(taskXml);
+                    break;
+                }
+                break;
             }
 
-            string source = "public class tst {}";
             CompileSource(source);
+
+            LoadTasksTask loadTasksTask = new LoadTasksTask();
+            loadTasksTask.Project = Project;
+            loadTasksTask.AssemblyPath = new FileInfo(Output);
+            loadTasksTask.Execute();
         }
 
     }

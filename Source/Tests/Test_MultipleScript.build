@@ -1,19 +1,75 @@
 <?xml version="1.0"?>
 <project name="Test_MultipleScript">
 
-    <delete file="${build.dir}/CompiledMultipleScripts.dll" />
+    <delete file="${path::get-temp-path()}/CompiledMultipleScripts.dll" />
 
-    <tdc output="${build.dir}/CompiledMultipleScripts.dll" >
+    <tdc output="${path::get-temp-path()}/CompiledMultipleScripts.dll" >
         <sources>
             <include name="Test_MultipleScript_Task1.taskdef" />
             <include name="Test_MultipleScript_Task2.taskdef" />
         </sources>
     </tdc>
 
-    <if test="${not file::is-assembly(build.dir + '/CompiledMultipleScripts.dll')}" >
+    <if test="${not file::is-assembly(path::get-temp-path() + '/CompiledMultipleScripts.dll')}" >
         <fail message="assembly not created" />
     </if>
 
-    <delete file="${build.dir}/CompiledMultipleScripts.dll" />
+<!--
+    <property name="sp1Value" value="" />
+    <property name="sp2Value" value="" />
+    <property name="sp3Value" value="" />
+
+    <property name="np1Value" value="" />
+    <property name="np2Value" value="" />
+    <property name="np3Value" value="" />
+    <property name="np4Value" value="" />
+
+    <testTask1  stringParam1="test1"
+                stringParam2="test2"
+                stringParam3="test3">
+
+        <nodeParam1>
+            <property name="np1Value" value="test1" />
+        </nodeParam1>
+
+        <nodeParam2>
+            <property name="np2Value" value="test2" />
+        </nodeParam2>
+
+        <nodeParam3>
+            <property name="np3Value" value="__stringParam1__.test3" />
+            <property name="np4Value" value="test4" />
+        </nodeParam3>
+
+    </testTask1>
+
+    <if test="${sp1Value != 'test1'}" >
+        <fail message="sp1Value: expected 'test1' got '${sp1Value}'" />
+    </if>
+
+    <if test="${sp2Value != 'test2'}" >
+        <fail message="sp2Value: expected 'test2' got '${sp2Value}'" />
+    </if>
+
+    <if test="${sp3Value != 'test3'}" >
+        <fail message="sp3Value: expected 'test3' got '${sp3Value}'" />
+    </if>
+
+    <if test="${np1Value != 'test1'}" >
+        <fail message="np1Value: expected 'test1' got '${np1Value}'" />
+    </if>
+
+    <if test="${np2Value != 'test2'}" >
+        <fail message="np2Value: expected 'test2' got '${np2Value}'" />
+    </if>
+
+    <if test="${np3Value != 'test1.test3'}" >
+        <fail message="np3Value: expected 'test1.test3' got '${np3Value}'" />
+    </if>
+
+    <if test="${np4Value != 'test4'}" >
+        <fail message="np4Value: expected 'test4' got '${np4Value}'" />
+    </if>
+-->
 
 </project>
