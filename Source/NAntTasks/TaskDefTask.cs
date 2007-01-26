@@ -28,8 +28,81 @@ namespace broloco.NAntTasks
     /// </remarks>
     /// <example>
     ///   <para>
+    ///     Create a custom task that takes two parameters.  Parameter 1 can be set to 'echo' or 'fail', and
+    ///       parameter 2 is the message to echo/fail.
     ///   <code>
     ///     <![CDATA[
+    ///       <taskdef name="echoFail" >
+    ///
+    ///         <stringparams>
+    ///           <stringparam name="task" />
+    ///           <stringparam name="message" required="false" />
+    ///         </stringparams>
+    ///
+    ///         <do>
+    ///           <property name="customMessage" value="__message__" />
+    ///           <if test="${customMessage == ''}" >
+    ///             <property name="customMessage" value="this is a default message" />
+    ///           </if>
+    ///           <__task__ message="${customMessage}" />
+    ///         </do>
+    ///
+    ///       </taskdef>
+    ///       ...
+    ///       <!-- echos the default message -->
+    ///       <echoFail task="echo" />
+    ///       ...
+    ///       <echoFail task="fail" message="this will fail the build" />
+    ///     ]]>
+    ///   </code>
+    ///   </para>
+    /// </example>
+    /// <example>
+    ///   <para>
+    ///     Create a custom task that takes a list of source files, target files, and
+    ///       a list of tasks to execute when the target files are not up to date.
+    ///   <code>
+    ///     <![CDATA[
+    ///       <taskdef name="execIfNotUpToDate" >
+    ///
+    ///         <nodeparams>
+    ///           <nodeparam name="sourceFiles" />
+    ///           <nodeparam name="targetFiles" />
+    ///           <nodeparam name="do" />
+    ///         </nodeparams>
+    ///
+    ///         <do>
+    ///           <uptodate property="execIfNotUpToDate.uptodate">
+    ///             <sourcefiles>
+    ///               <__sourceFiles__/>
+    ///             </sourcefiles>
+    ///             <targetfiles>
+    ///               <__targetFiles__/>
+    ///             </targetfiles>
+    ///           </uptodate>
+    ///           <if test="${not execIfNotUpToDate.uptodate}" >
+    ///             <__do__/>
+    ///           </if>
+    ///         </do>
+    ///
+    ///       </taskdef>
+    ///       ...
+    ///       <!-- echos the a message if the files are not up to date -->
+    ///       <execIfNotUpToDate>
+    ///
+    ///         <sourceFiles>
+    ///           <include name="*.cs" />
+    ///         </sourceFiles>
+    ///
+    ///         <targetFiles>
+    ///           <include name="myAssembly.dll" />
+    ///         </targetFiles>
+    ///
+    ///         <do>
+    ///           <echo message="work needs done" />
+    ///         </do>
+    ///
+    ///       </execIfNotUpToDate>
     ///     ]]>
     ///   </code>
     ///   </para>
@@ -99,13 +172,13 @@ namespace broloco.NAntTasks
             // generate named string parameters
             foreach (StringParam stringParam in StringParams)
             {
-                customTaskCode +=  "    private string _" + stringParam.ParameterName + " = string.Empty ;\n";
+                customTaskCode +=  "    private string __" + stringParam.ParameterName + " = string.Empty ;\n";
                 customTaskCode +=  "\n";
                 customTaskCode +=  "    [TaskAttribute(\"" + stringParam.ParameterName + "\", Required=" + stringParam.Required.ToString().ToLower() + ")]\n";
-                customTaskCode +=  "    public string " + stringParam.ParameterName + "\n";
+                customTaskCode +=  "    public string _" + stringParam.ParameterName + "\n";
                 customTaskCode +=  "    {\n";
-                customTaskCode +=  "        get { return _" + stringParam.ParameterName + "; }\n";
-                customTaskCode +=  "        set { _" + stringParam.ParameterName + " = value; }\n";
+                customTaskCode +=  "        get { return __" + stringParam.ParameterName + "; }\n";
+                customTaskCode +=  "        set { __" + stringParam.ParameterName + " = value; }\n";
                 customTaskCode +=  "    }\n";
                 customTaskCode +=  "\n";
             }
@@ -113,13 +186,13 @@ namespace broloco.NAntTasks
             // generate named xml-node parameters
             foreach (NodeParam nodeParam in NodeParams)
             {
-                customTaskCode +=  "    private RawXml _" + nodeParam.ParameterName + ";\n";
+                customTaskCode +=  "    private RawXml __" + nodeParam.ParameterName + ";\n";
                 customTaskCode +=  "\n";
                 customTaskCode +=  "    [BuildElement(\"" + nodeParam.ParameterName + "\", Required=" + nodeParam.Required.ToString().ToLower() + ")]\n";
-                customTaskCode +=  "    public RawXml " + nodeParam.ParameterName + "\n";
+                customTaskCode +=  "    public RawXml _" + nodeParam.ParameterName + "\n";
                 customTaskCode +=  "    {\n";
-                customTaskCode +=  "        get { return _" + nodeParam.ParameterName + "; }\n";
-                customTaskCode +=  "        set { _" + nodeParam.ParameterName + " = value; }\n";
+                customTaskCode +=  "        get { return __" + nodeParam.ParameterName + "; }\n";
+                customTaskCode +=  "        set { __" + nodeParam.ParameterName + " = value; }\n";
                 customTaskCode +=  "    }\n";
                 customTaskCode +=  "\n";
             }
@@ -142,9 +215,9 @@ namespace broloco.NAntTasks
                 customTaskCode +=  "        nodes = scriptDom.SelectNodes(\"//__"  + nodeParam.ParameterName + "__\");\n";
                 customTaskCode +=  "        foreach (XmlNode node in nodes)\n";
                 customTaskCode +=  "        {\n";
-                customTaskCode +=  "            if (" + nodeParam.ParameterName + " != null)\n";
+                customTaskCode +=  "            if (_" + nodeParam.ParameterName + " != null)\n";
                 customTaskCode +=  "            {\n";
-                customTaskCode +=  "                foreach (XmlNode task in " + nodeParam.ParameterName + ".Xml.ChildNodes)\n";
+                customTaskCode +=  "                foreach (XmlNode task in _" + nodeParam.ParameterName + ".Xml.ChildNodes)\n";
                 customTaskCode +=  "                {\n";
                 customTaskCode +=  "                    node.ParentNode.InsertBefore(scriptDom.ImportNode(task, true), node);\n";
                 customTaskCode +=  "                }\n";
@@ -157,7 +230,7 @@ namespace broloco.NAntTasks
             customTaskCode +=  "        xml = scriptDom.OuterXml;\n";
             foreach (StringParam stringParam in StringParams)
             {
-                customTaskCode +=  "        xml = xml.Replace(\"__" + stringParam.ParameterName + "__\", " + stringParam.ParameterName + ");\n";
+                customTaskCode +=  "        xml = xml.Replace(\"__" + stringParam.ParameterName + "__\", _" + stringParam.ParameterName + ");\n";
             }
             customTaskCode +=  "        scriptDom.LoadXml(xml);\n";
 
