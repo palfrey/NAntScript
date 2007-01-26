@@ -10,3 +10,7 @@ To build:
 
 That's it!
 
+
+
+To create a release, type 'nant export'.
+

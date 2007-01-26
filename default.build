@@ -39,4 +39,24 @@
         <property name="build.dir" value="${project::get-base-directory()}/build_${project.config}" />
     </target>
 
+    <target name="export" description="Create a release build, and zip it up ready for distribution">
+
+        <call target="debug" />
+        <call target="clean" />
+
+        <call target="release" />
+        <call target="clean" />
+
+        <call target="release" />
+        <call target="build" />
+
+        <zip zipfile="${build.dir}/broloco.NAntScript.${project.version}.${nant.settings.currentframework}.zip">
+            <fileset basedir="${build.dir}">
+                <exclude name="**/.svn/**" />
+                <include name="**" />
+            </fileset>
+        </zip>
+
+    </target>
+
 </project>
