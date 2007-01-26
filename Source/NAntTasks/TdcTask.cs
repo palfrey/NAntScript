@@ -17,12 +17,22 @@ namespace broloco.NAntTasks
     /// </summary>
     /// <remarks>
     ///   <para>
+    ///     Compiles a collection of build files containing <see cref="TaskDefTask" /> definitions.
+    ///       Each build file should contain a &lt;project&gt; top-level node, with taskdef nodes
+    ///       as child elements.
+    ///       The compiled assembly's tasks are loaded.
     ///   </para>
     /// </remarks>
     /// <example>
     ///   <para>
+    ///     Compile all .taskdef files to an assembly in a temporary directory, and load the compiled tasks.
     ///   <code>
     ///     <![CDATA[
+    ///       <tdc output="${path::get-temp-path()}/myTemporaryBuildAssembly.dll" >
+    ///         <sources>
+    ///           <include name="*.taskdef" />
+    ///         </sources>
+    ///       </tdc>
     ///     ]]>
     ///   </code>
     ///   </para>
@@ -45,7 +55,7 @@ namespace broloco.NAntTasks
         }
 
         /// <summary>
-        /// The set of source files for compilation.
+        /// The <see cref="FileSet" /> of source files for compilation.
         /// </summary>
         [BuildElement("sources", Required=true)]
         public FileSet Sources {
