@@ -4,7 +4,7 @@
     <property name="nant.settings.currentframework" value="net-2.0" />
     <echo message="Using '${nant.settings.currentframework}' framework on '${platform::get-name()}' platform." />
 
-    <property name="project.version" value="0.0.0.1" overwrite="false" />
+    <property name="project.version" value="1.0.0.0" overwrite="false" />
 
     <!-- debug build by default -->
     <call target="debug" />
@@ -21,7 +21,12 @@
 
         <nant buildfile="Source\Source.build"           inheritall="true"   target="clean"/>
 
-        <delete dir="${build.dir}" failonerror="false" />
+        <delete dir="${build.dir}"  failonerror="false" />
+        <delete>
+            <fileset>
+                <include name="*.zip" />
+            </fileset>
+        </delete>
 
     </target>
 
@@ -47,10 +52,17 @@
         <call target="release" />
         <call target="clean" />
 
+        <zip zipfile="broloco.NAntScript.${project.version}.src.zip">
+            <fileset>
+                <exclude name="**/.svn/**" />
+                <include name="**" />
+            </fileset>
+        </zip>
+
         <call target="release" />
         <call target="build" />
 
-        <zip zipfile="${build.dir}/broloco.NAntScript.${project.version}.${nant.settings.currentframework}.zip">
+        <zip zipfile="broloco.NAntScript.${project.version}.${nant.settings.currentframework}.zip">
             <fileset basedir="${build.dir}">
                 <exclude name="**/.svn/**" />
                 <include name="**" />
