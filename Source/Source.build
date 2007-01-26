@@ -66,7 +66,6 @@
             </documenters>
         </ndoc>
 
-        <delete dir="${build.dir}/doc/help/elements" />
         <delete dir="${build.dir}/doc/help/enums" />
         <delete dir="${build.dir}/doc/help/filters" />
         <delete dir="${build.dir}/doc/help/functions" />

@@ -10,10 +10,20 @@ namespace broloco.NAntTasks
 {
 
     /// <summary>
-    /// Allows scripting of a custom task.
+    /// Creates a custom task containing NAnt tasks.
     /// </summary>
     /// <remarks>
     ///   <para>
+    ///     Define a task by specifying a name, a list of string parameters (attributes), and
+    ///       a lits of node parameters (child elements).  A custom task is created that
+    ///       runs each of the tasks in the &lt;do/&gt; parameter replacing string parameters and
+    ///       node parameters before execution.
+    ///   </para>
+    ///   <para>
+    ///     String parameters are referenced in the &lt;do/&gt; section using the syntax <i>__parameter name__</i>.
+    ///   </para>
+    ///   <para>
+    ///     Node parameters are referenced in the &lt;do/&gt; section using the syntax <i>&lt;__parameter name__/&gt;</i>.
     ///   </para>
     /// </remarks>
     /// <example>
@@ -45,7 +55,7 @@ namespace broloco.NAntTasks
         }
 
         /// <summary>
-        /// The string parameters.
+        /// A list of <see cref="StringParam" /> (attribute) parameters.
         /// </summary>
         [BuildElementCollection("stringparams", "stringparam")]
         public StringParamCollection StringParams
@@ -54,7 +64,7 @@ namespace broloco.NAntTasks
         }
 
         /// <summary>
-        /// The xml-node parameters.
+        /// A list of <see cref="NodeParam" /> (xml node) parameters.
         /// </summary>
         [BuildElementCollection("nodeparams", "nodeparam")]
         public NodeParamCollection NodeParams
