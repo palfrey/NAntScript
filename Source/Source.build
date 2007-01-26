@@ -116,6 +116,13 @@
             </fileset>
         </copy>
 
+        <copy todir="${build.dir}">
+            <fileset>
+                <include name="licence.txt" />
+                <include name="readme.txt" />
+            </fileset>
+        </copy>
+
     </target>
 
 
