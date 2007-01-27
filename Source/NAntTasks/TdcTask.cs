@@ -13,7 +13,7 @@ namespace broloco.NAntTasks
 {
 
     /// <summary>
-    /// Allows compilation of taskdef files.
+    /// Compiles a collection of taskdef files into an assembly.
     /// </summary>
     /// <remarks>
     ///   <para>
