@@ -26,7 +26,7 @@ all its non-assembly dependencies to the "<nant>\bin\tasks" directory.
 
 An <include> element can be added to the <task-assemblies> node in the <framework> node for the
 .NET Framework version that you intend to use. The "name" attribute of the <include> element
-should hold the absolute path to NAnt.Contrib.Tasks.dll.
+should hold the absolute path to broloco.NAntTasks.dll.
 
 For example:
 
