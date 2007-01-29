@@ -4,7 +4,7 @@
     <property name="nant.settings.currentframework" value="net-2.0" />
     <echo message="Using '${nant.settings.currentframework}' framework on '${platform::get-name()}' platform." />
 
-    <property name="project.version" value="1.0.0.0" overwrite="false" />
+    <property name="project.version" value="1.0.0.1" overwrite="false" />
 
     <!-- debug build by default -->
     <call target="debug" />
