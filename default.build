@@ -55,7 +55,7 @@
         <zip zipfile="broloco.NAntScript.${project.version}.src.zip">
             <fileset>
                 <exclude name="**/.svn/**" />
-                <exclude name="results" />
+                <exclude name="results/**" />
                 <include name="**" />
             </fileset>
         </zip>
