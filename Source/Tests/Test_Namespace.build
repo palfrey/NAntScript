@@ -7,17 +7,30 @@
             <stringparam name="stringParam1" />
         </stringparams>
 
+        <nodeparams>
+            <nodeparam name="nodeParam1" />
+        </nodeparams>
+
         <do>
             <property name="sp1Value" value="__stringParam1__" />
+            <__nodeParam1__/>
         </do>
 
     </taskdef>
 
     <property name="sp1Value" value="" />
-    <testTaskNamespaceEmbedded stringParam1="testEmbedded" />
+    <property name="sp2Value" value="" />
+    <testTaskNamespaceEmbedded stringParam1="testEmbedded">
+        <nodeParam1>
+            <property name="sp2Value" value="testEmbedded2" />
+        </nodeParam1>
+    </testTaskNamespaceEmbedded>
 
     <if test="${sp1Value != 'testEmbedded'}" >
         <fail message="sp1Value: expected 'testEmbedded' got '${sp1Value}'" />
+    </if>
+    <if test="${sp2Value != 'testEmbedded2'}" >
+        <fail message="sp2Value: expected 'testEmbedded2' got '${sp2Value}'" />
     </if>
 
 
@@ -34,11 +47,18 @@
     </if>
 
     <property name="sp1Value" value="" />
-
-    <testTaskNamespace stringParam1="testNamespace" />
+    <property name="sp2Value" value="" />
+    <testTaskNamespace stringParam1="testNamespace">
+        <nodeParam1>
+            <property name="sp2Value" value="testNamespace2" />
+        </nodeParam1>
+    </testTaskNamespace>
 
     <if test="${sp1Value != 'testNamespace'}" >
         <fail message="sp1Value: expected 'testNamespace' got '${sp1Value}'" />
+    </if>
+    <if test="${sp2Value != 'testNamespace2'}" >
+        <fail message="sp2Value: expected 'testNamespace2' got '${sp2Value}'" />
     </if>
 
 </project>

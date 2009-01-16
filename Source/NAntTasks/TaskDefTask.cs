@@ -185,6 +185,7 @@ namespace broloco.NAntTasks
             }
 
             // generate named xml-node parameters
+            Log(Level.Verbose, "Number of node parameters: " + NodeParams.Count);
             foreach (NodeParam nodeParam in NodeParams)
             {
                 customTaskCode +=  "    private RawXml __" + nodeParam.ParameterName + ";\n";
@@ -213,7 +214,7 @@ namespace broloco.NAntTasks
                 customTaskCode +=  "        XmlNodeList nodes;\n";
             foreach (NodeParam nodeParam in NodeParams)
             {
-                customTaskCode +=  "        nodes = scriptDom.SelectNodes(\"//__"  + nodeParam.ParameterName + "__\");\n";
+                customTaskCode +=  "        nodes = scriptDom.SelectNodes(\"//*[local-name()='__"  + nodeParam.ParameterName + "__']\");\n";
                 customTaskCode +=  "        foreach (XmlNode node in nodes)\n";
                 customTaskCode +=  "        {\n";
                 customTaskCode +=  "            if (_" + nodeParam.ParameterName + " != null)\n";

@@ -8,8 +8,13 @@
             <stringparam name="stringParam1" />
         </stringparams>
 
+        <nodeparams>
+            <nodeparam name="nodeParam1" />
+        </nodeparams>
+
         <do>
             <property name="sp1Value" value="__stringParam1__" />
+            <__nodeParam1__/>
         </do>
 
     </taskdef>
