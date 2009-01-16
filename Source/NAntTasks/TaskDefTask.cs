@@ -170,6 +170,7 @@ namespace broloco.NAntTasks
             customTaskCode +=  "\n";
 
             // generate named string parameters
+            Log(Level.Verbose, "Number of string parameters: " + StringParams.Count);
             foreach (StringParam stringParam in StringParams)
             {
                 customTaskCode +=  "    private string __" + stringParam.ParameterName + " = string.Empty ;\n";
@@ -248,7 +249,7 @@ namespace broloco.NAntTasks
 
             return customTaskCode;
         }
-
+        
         /// <summary>
         /// Executes the taskdef task.
         /// </summary>
@@ -259,16 +260,18 @@ namespace broloco.NAntTasks
             // Generate code for the custom task as a script task ...
             Log(Level.Verbose, "*** Custom code start ***");
             string customTaskCode = "";
-            customTaskCode +=  "<script language='C#' >\n";
+            customTaskCode +=  "<script language='C#'>\n";
             customTaskCode +=  "<imports> <import namespace=\"System.Xml\" /> <import namespace=\"NAnt.Core.Types\" /> </imports> <code> <![CDATA[\n";
             customTaskCode += GenerateCSharpCode();
             customTaskCode += "]]" + "></code></script>";
 
-            Log(Level.Verbose, customTaskCode);
-            Log(Level.Verbose, "*** Custom code end ***");
-
             XmlDocument xmlScriptTask = new XmlDocument();
             xmlScriptTask.LoadXml(customTaskCode);
+            TdcTask.UseDefaultNamespace(xmlScriptTask, Project);
+
+            Log(Level.Verbose, xmlScriptTask.OuterXml);
+            Log(Level.Verbose, "*** Custom code end ***");
+
             Project.CreateTask(xmlScriptTask.ChildNodes[0]).Execute();
         }
 

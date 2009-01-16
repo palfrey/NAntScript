@@ -97,11 +97,30 @@ namespace broloco.NAntTasks
                 throw new BuildException(errors, Location);
             }
         }
+        
+        private static string GetNamespaceDeclaration(XmlDocument document)
+        {
+            foreach (XmlAttribute attribute in document.DocumentElement.Attributes)
+            {
+                if (attribute.Name == "xmlns")
+                {
+                    if (attribute.Value == "http://none")
+                    {
+                        continue;
+                    }
+                    return "xmlns='" + attribute.Value + "'";
+                }
+            }
+            return "";
+        }
 
-        private static void StripNamespaces(XmlDocument document)
+        internal static void UseDefaultNamespace(XmlDocument document, Project project)
         {
             string xmlCopy = document.OuterXml;
             xmlCopy = xmlCopy.Replace("xmlns=\"", "disabledxmlns=\"");
+            string docStart = "<" + document.DocumentElement.Name;
+            string newDocStart = docStart + " " + GetNamespaceDeclaration(project.Document);
+            xmlCopy = xmlCopy.Replace(docStart, newDocStart);
             document.LoadXml(xmlCopy);
         }
 
@@ -121,9 +140,9 @@ namespace broloco.NAntTasks
                 {
                     XmlDocument tasksXml = new XmlDocument();
                     tasksXml.Load(fileName);
-                    StripNamespaces(tasksXml);
+                    UseDefaultNamespace(tasksXml, Project);
 
-                    foreach (XmlNode taskXml in tasksXml.SelectNodes("/*/taskdef"))
+                    foreach (XmlNode taskXml in tasksXml.SelectNodes("/*/*[local-name()='taskdef']"))
                     {
                         Log(Level.Verbose, "generating task from: " + taskXml.OuterXml);
                         TaskDefTask taskDef = (TaskDefTask) Project.CreateTask(taskXml);

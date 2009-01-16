@@ -1,5 +1,25 @@
 <?xml version="1.0"?>
-<project name="Test_Namespace">
+<project name="Test_Namespace" xmlns="http://a.test/namespace/build">
+
+    <taskdef name="testTaskNamespaceEmbedded">
+
+        <stringparams>
+            <stringparam name="stringParam1" />
+        </stringparams>
+
+        <do>
+            <property name="sp1Value" value="__stringParam1__" />
+        </do>
+
+    </taskdef>
+
+    <property name="sp1Value" value="" />
+    <testTaskNamespaceEmbedded stringParam1="testEmbedded" />
+
+    <if test="${sp1Value != 'testEmbedded'}" >
+        <fail message="sp1Value: expected 'testEmbedded' got '${sp1Value}'" />
+    </if>
+
 
     <delete file="${path::get-temp-path()}/CompiledNamespaceScript.dll" />
 
