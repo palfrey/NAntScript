@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<project name="Test_Namespace_Task" xmlns="http://a.test/namespace">
+
+    <!-- create a second task -->
+    <taskdef name="testTaskNamespace">
+
+        <stringparams>
+            <stringparam name="stringParam1" />
+        </stringparams>
+
+        <do>
+            <property name="sp1Value" value="__stringParam1__" />
+        </do>
+
+    </taskdef>
+
+</project>

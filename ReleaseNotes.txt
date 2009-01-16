@@ -1,0 +1,12 @@
+
+Build 1.1.0.0
+=============
+
+Bug fix - Fixed running tdc against XML files containing namespaces.
+
+
+Build 1.0.0.0
+=============
+
+Initial release.
+

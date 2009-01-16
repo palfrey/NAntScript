@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<project name="Test_Namespace">
+
+    <delete file="${path::get-temp-path()}/CompiledNamespaceScript.dll" />
+
+    <tdc output="${path::get-temp-path()}/CompiledNamespaceScript.dll" >
+        <sources>
+            <include name="Test_Namespace_Task.taskdef" />
+        </sources>
+    </tdc>
+
+    <if test="${not file::is-assembly(path::get-temp-path() + '/CompiledNamespaceScript.dll')}" >
+        <fail message="assembly not created" />
+    </if>
+
+    <property name="sp1Value" value="" />
+
+    <testTaskNamespace stringParam1="testNamespace" />
+
+    <if test="${sp1Value != 'testNamespace'}" >
+        <fail message="sp1Value: expected 'testNamespace' got '${sp1Value}'" />
+    </if>
+
+</project>

@@ -98,6 +98,13 @@ namespace broloco.NAntTasks
             }
         }
 
+        private static void StripNamespaces(XmlDocument document)
+        {
+            string xmlCopy = document.OuterXml;
+            xmlCopy = xmlCopy.Replace("xmlns=\"", "disabledxmlns=\"");
+            document.LoadXml(xmlCopy);
+        }
+
         /// <summary>
         /// Executes the tdc task.
         /// </summary>
@@ -114,14 +121,17 @@ namespace broloco.NAntTasks
                 {
                     XmlDocument tasksXml = new XmlDocument();
                     tasksXml.Load(fileName);
+                    StripNamespaces(tasksXml);
 
                     foreach (XmlNode taskXml in tasksXml.SelectNodes("/*/taskdef"))
                     {
+                        Log(Level.Verbose, "generating task from: " + taskXml.OuterXml);
                         TaskDefTask taskDef = (TaskDefTask) Project.CreateTask(taskXml);
                         source += taskDef.GenerateCSharpCode() + "\n";
                     }
                 }
 
+                Log(Level.Verbose, source);
                 CompileSource(source);
             }
 

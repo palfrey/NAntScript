@@ -8,6 +8,8 @@
         <nant buildfile="Test_SingleScript.build" />
 
         <nant buildfile="Test_MultipleScript.build" />
+        
+        <nant buildfile="Test_Namespace.build" />
 
     </target>
 
