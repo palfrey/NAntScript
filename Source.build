@@ -61,8 +61,20 @@
                 </if>
             </do>
 
-        </taskdef>
+		</taskdef>
 
+		<!-- <call target="build-docs" /> // disabling for the moment as nDoc is rather broken... http://charliedigital.com/2006/07/26/ndoc-2-is-officially-dead/ -->
+
+        <copy todir="${build.dir}">
+            <fileset>
+                <include name="licence.txt" />
+                <include name="readme.txt" />
+            </fileset>
+        </copy>
+
+	</target>
+
+	<target name="build-docs">
         <execIfNotUpToDate>
         
             <sourceFiles>
@@ -114,17 +126,8 @@
                 <exclude name="**/.svn/**" />
                 <include name="**" />
             </fileset>
-        </copy>
-
-        <copy todir="${build.dir}">
-            <fileset>
-                <include name="licence.txt" />
-                <include name="readme.txt" />
-            </fileset>
-        </copy>
-
-    </target>
-
+		</copy>
+	</target>
 
     <target name="clean">
 

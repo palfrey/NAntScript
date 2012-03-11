@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
 <project name="NAntScript" default="build">
-
-    <property name="nant.settings.currentframework" value="net-2.0" />
     <echo message="Using '${nant.settings.currentframework}' framework on '${platform::get-name()}' platform." />
 
     <property name="project.version" value="1.1.0.1" overwrite="false" />
@@ -14,13 +12,11 @@
         <mkdir dir="${build.dir}/bin" />
         <copy file="ReleaseNotes.txt" todir="${build.dir}" />
 
-        <nant buildfile="Source\Source.build"           inheritall="true"   target="build"/>
-
+        <nant buildfile="Source.build" inheritall="true" target="build"/>
     </target>
 
     <target name="clean">
-
-        <nant buildfile="Source\Source.build"           inheritall="true"   target="clean"/>
+        <nant buildfile="Source.build" inheritall="true" target="clean"/>
 
         <delete dir="${build.dir}"  failonerror="false" />
         <delete>
@@ -28,7 +24,6 @@
                 <include name="*.zip" />
             </fileset>
         </delete>
-
     </target>
 
     <target name="debug" description="Setup a 'debug' build">
@@ -46,7 +41,6 @@
     </target>
 
     <target name="export" description="Create a release build, and zip it up ready for distribution">
-
         <call target="debug" />
         <call target="clean" />
 
