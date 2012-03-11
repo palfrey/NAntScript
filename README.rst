@@ -20,7 +20,7 @@ For example:
 2. Copy the content of the NAntScript bin directory to the NAnt directory
 
 In order to make certain tasks available to every build file, you can copy the
-tasks assembly and all its non-assembly dependencies to the "<nant>\bin\tasks"
+tasks assembly and all its non-assembly dependencies to the "<nant>\\bin\\tasks"
 directory.
 
 3. Modify NAnt configuration file (not recommended)
