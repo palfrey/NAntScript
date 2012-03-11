@@ -32,6 +32,8 @@ broloco.NAntTasks.dll.
 
 For example:
 
+::
+
     <framework
             name="net-2.0"
                 family="net"
@@ -43,7 +45,7 @@ For example:
             ...
             <include name="c:/broloco.NAntScript.1.0.0.0.net-2.0/bin/broloco.NAntTasks.dll" />
             ...
-                </task-assemblies>
+            </task-assemblies>
         ....
     </framework>
 
