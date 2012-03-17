@@ -1,22 +1,11 @@
 <?xml version="1.0"?>
-<project name="NAntScript" default="build">
+<project name="NAntScript" default="debug">
     <echo message="Using '${nant.settings.currentframework}' framework on '${platform::get-name()}' platform." />
 
     <property name="project.version" value="1.1.0.1" overwrite="false" />
 
-    <!-- debug build by default -->
-    <call target="debug" />
-
-    <target name="build">
-
-        <mkdir dir="${build.dir}/bin" />
-        <copy file="ReleaseNotes.txt" todir="${build.dir}" />
-
-        <nant buildfile="Source.build" inheritall="true" target="build"/>
-    </target>
-
     <target name="clean">
-        <nant buildfile="Source.build" inheritall="true" target="clean"/>
+		<delete file="NAntTasks/AssemblyInfo.cs" />
 
         <delete dir="${build.dir}"  failonerror="false" />
         <delete>
@@ -66,5 +55,136 @@
         </zip>
 
     </target>
+	<include buildfile="Tests/Tests.build" />
+
+    <target name="build">
+        <mkdir dir="${build.dir}/bin" />
+		<copy file="ReleaseNotes.txt" todir="${build.dir}" />
+
+        <asminfo output="NAntTasks/AssemblyInfo.cs" language="CSharp">
+            <imports>
+                <import namespace="System.Reflection" />
+            </imports>
+            <attributes>
+                <attribute type="AssemblyTitleAttribute" value="broloco NAntTasks" />
+                <attribute type="AssemblyDescriptionAttribute" value="broloco NAntTasks" />
+                <attribute type="AssemblyConfigurationAttribute" value="" />
+                <attribute type="AssemblyCompanyAttribute" value="broloco" />
+                <attribute type="AssemblyProductAttribute" value="broloco" />
+                <attribute type="AssemblyCopyrightAttribute" value="" />
+                <attribute type="AssemblyTrademarkAttribute" value="" />
+                <attribute type="AssemblyVersionAttribute" value="${project.version}" />
+                <attribute type="AssemblyDelaySignAttribute" value="false" />
+            </attributes>
+        </asminfo>
+
+        <csc    target="library"
+                debug="${build.debug}"
+                optimize="${optimize}"
+                output="${build.dir}/bin/broloco.NAntTasks.dll"
+                warnaserror="true"
+                doc="${build.dir}/bin/broloco.NAntTasks.xml">
+
+            <references>
+                <include name="${nant::get-base-directory()}/NAnt.Core.dll" />
+            </references>
+
+            <sources>
+                <include name="NAntTasks/*.cs" />
+            </sources>
+
+        </csc>
+
+        <loadtasks assembly="${build.dir}/bin/broloco.NAntTasks.dll" />
+
+        <taskdef name="execIfNotUpToDate" >
+        
+            <nodeparams>
+                <nodeparam name="sourceFiles" />
+                <nodeparam name="targetFiles" />
+                <nodeparam name="do" />
+            </nodeparams>
+
+            <do>
+                <uptodate property="execIfNotUpToDate.uptodate">
+                    <sourcefiles>
+                        <__sourceFiles__/>
+                    </sourcefiles>
+                    <targetfiles>
+                        <__targetFiles__/>
+                    </targetfiles>
+                </uptodate>
+                <if test="${not execIfNotUpToDate.uptodate}" >
+                    <__do__/>
+                </if>
+            </do>
+
+		</taskdef>
+
+		<!-- <call target="build-docs" /> // disabling for the moment as nDoc is rather broken... http://charliedigital.com/2006/07/26/ndoc-2-is-officially-dead/ -->
+
+        <copy todir="${build.dir}">
+            <fileset>
+                <include name="licence.txt" />
+                <include name="readme.txt" />
+            </fileset>
+        </copy>
+
+	</target>
+
+	<target name="build-docs">
+        <execIfNotUpToDate>
+        
+            <sourceFiles>
+                <include name="${build.dir}/bin/broloco.NAntTasks.dll" />
+            </sourceFiles>
+
+            <targetFiles>
+                <include name="${build.dir}/doc/help/tasks/taskdef.html" />
+            </targetFiles>
+
+            <do>
+                <ndoc>
+                    <assemblies basedir="${build.dir}/bin">
+                        <include name="broloco.NAntTasks.dll" />
+                    </assemblies>
+                    <documenters>
+                        <documenter name="NAnt">
+                            <property name="OutputDirectory" value="${build.dir}/doc/help" />
+                            <property name="SdkDocVersion" value="SDK_v1_1" />
+                            <property name="SdkLinksOnWeb" value="true" />
+                            <!-- set base uri used for linking to other NAnt docs -->
+                            <property name="NAntBaseUri" value="http://nant.sourceforge.net/release/latest/help/" />
+                            <!-- do not filter on namespace -->
+                            <property name="NamespaceFilter" value="" />
+                            <!-- set the name and version of the product for which docs are generated -->
+                            <property name="ProductName" value="NAntScript" />
+                            <property name="ProductVersion" value="${project.version}" />
+                            <property name="ProductUrl" value="http://code.google.com/p/nantscript" />
+                            <property name="Preliminary" value="${not(project.config == 'release')}" />
+                            <property name="DocumentAttributes" value="True" />
+                            <property name="IncludeAssemblyVersion" value="True" />
+                            <property name="ShowMissingParams" value="True" />
+                            <property name="ShowMissingReturns" value="True" />
+                            <property name="ShowMissingValues" value="True" />
+                        </documenter>
+                    </documenters>
+                </ndoc>
+            </do>
+
+        </execIfNotUpToDate>
+
+        <delete dir="${build.dir}/doc/help/enums" />
+        <delete dir="${build.dir}/doc/help/filters" />
+        <delete dir="${build.dir}/doc/help/functions" />
+        <delete dir="${build.dir}/doc/help/types" />
+
+        <copy todir="${build.dir}/doc">
+            <fileset basedir="doc">
+                <exclude name="**/.svn/**" />
+                <include name="**" />
+            </fileset>
+		</copy>
+	</target>
 
 </project>
