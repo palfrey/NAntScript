@@ -57,6 +57,34 @@
     </target>
 	<include buildfile="Tests/Tests.build" />
 
+	<target name="loadAndDef">
+        <loadtasks assembly="${build.dir}/bin/broloco.NAntTasks.dll" />
+
+        <taskdef name="execIfNotUpToDate" >
+        
+            <nodeparams>
+                <nodeparam name="sourceFiles" />
+                <nodeparam name="targetFiles" />
+                <nodeparam name="do" />
+            </nodeparams>
+
+            <do>
+                <uptodate property="execIfNotUpToDate.uptodate">
+                    <sourcefiles>
+                        <__sourceFiles__/>
+                    </sourcefiles>
+                    <targetfiles>
+                        <__targetFiles__/>
+                    </targetfiles>
+                </uptodate>
+                <if test="${not execIfNotUpToDate.uptodate}" >
+                    <__do__/>
+                </if>
+            </do>
+
+		</taskdef>
+	</target>
+
     <target name="build">
         <mkdir dir="${build.dir}/bin" />
 		<copy file="ReleaseNotes.txt" todir="${build.dir}" />
@@ -95,32 +123,7 @@
 
         </csc>
 
-        <loadtasks assembly="${build.dir}/bin/broloco.NAntTasks.dll" />
-
-        <taskdef name="execIfNotUpToDate" >
-        
-            <nodeparams>
-                <nodeparam name="sourceFiles" />
-                <nodeparam name="targetFiles" />
-                <nodeparam name="do" />
-            </nodeparams>
-
-            <do>
-                <uptodate property="execIfNotUpToDate.uptodate">
-                    <sourcefiles>
-                        <__sourceFiles__/>
-                    </sourcefiles>
-                    <targetfiles>
-                        <__targetFiles__/>
-                    </targetfiles>
-                </uptodate>
-                <if test="${not execIfNotUpToDate.uptodate}" >
-                    <__do__/>
-                </if>
-            </do>
-
-		</taskdef>
-
+		<call target="loadAndDef" />
 		<!-- <call target="build-docs" /> // disabling for the moment as nDoc is rather broken... http://charliedigital.com/2006/07/26/ndoc-2-is-officially-dead/ -->
 
         <copy todir="${build.dir}">
@@ -133,6 +136,7 @@
 	</target>
 
 	<target name="build-docs">
+		<call target="loadAndDef" />
         <execIfNotUpToDate>
         
             <sourceFiles>
