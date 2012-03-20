@@ -262,6 +262,7 @@ namespace broloco.NAntTasks
             Log(Level.Verbose, "*** Custom code start ***");
             string customTaskCode = "";
             customTaskCode +=  "<script language='C#'>\n";
+			customTaskCode +=  "<references><include name=\"System.Xml.DLL\" /></references>\n";
             customTaskCode +=  "<imports> <import namespace=\"System.Xml\" /> <import namespace=\"NAnt.Core.Types\" /> </imports> <code> <![CDATA[\n";
             customTaskCode += GenerateCSharpCode();
             customTaskCode += "]]" + "></code></script>";
