@@ -123,7 +123,6 @@
 
         </csc>
 
-		<call target="loadAndDef" />
 		<!-- <call target="build-docs" /> // disabling for the moment as nDoc is rather broken... http://charliedigital.com/2006/07/26/ndoc-2-is-officially-dead/ -->
 
         <copy todir="${build.dir}">
