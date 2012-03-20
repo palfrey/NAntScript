@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <!-- Documenting T:broloco.NAntTasks.TaskDefTask-->
+  <head>
+    <meta http-equiv="Content-Language" content="en-ca" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../style.css" />
+    <title>&lt;taskdef&gt; Task</title>
+  </head>
+  <body>
+    <table width="100%" border="0" cellspacing="0" cellpadding="2" class="NavBar">
+      <tr>
+        <td class="NavBar-Cell">
+          <a href="http://code.google.com/p/nantscript">
+            <b>NAntScript</b>
+          </a>
+          <img alt="-&gt;" src="../images/arrow.gif" />
+          <a href="../index.html">Help</a>
+          <img alt="-&gt;" src="../images/arrow.gif" />
+          <a href="../tasks/index.html">Task Reference</a>
+          <img alt="-&gt;" src="../images/arrow.gif" /> &lt;taskdef&gt;</td>
+        <td class="NavBar-Cell" align="right">
+                        v1.1.0.1</td>
+      </tr>
+    </table>
+    <h1>&lt;taskdef&gt;</h1>
+    <p class="topicstatus">[This is preliminary documentation and subject to change.]</p>
+    <p> Creates a custom task containing NAnt tasks. </p>
+    <p> Define a task by specifying a name, a list of string parameters (attributes), and a lits of node parameters (child elements). A custom task is created that runs each of the tasks in the &lt;do/&gt; parameter replacing string parameters and node parameters before execution. </p>
+    <p> String parameters are referenced in the &lt;do/&gt; section using the syntax <i xmlns="">__parameter name__</i>. </p>
+    <p> Node parameters are referenced in the &lt;do/&gt; section using the syntax <i xmlns="">&lt;__parameter name__/&gt;</i>. </p>
+    <h3>Parameters</h3>
+    <div class="table">
+      <table>
+        <tr>
+          <th>Attribute</th>
+          <th style="text-align: center;">Type</th>
+          <th>Description</th>
+          <th style="text-align: center;">Required</th>
+        </tr>
+        <tr>
+          <td valign="top" class="required">name</td>
+          <td style="text-align: center;">string</td>
+          <td> The name for the custom task. </td>
+          <td style="text-align: center;">True</td>
+        </tr>
+        <tr>
+          <td valign="top">failonerror</td>
+          <td style="text-align: center;">bool</td>
+          <td>
+          </td>
+          <td style="text-align: center;">False</td>
+        </tr>
+        <tr>
+          <td valign="top">if</td>
+          <td style="text-align: center;">bool</td>
+          <td>
+          </td>
+          <td style="text-align: center;">False</td>
+        </tr>
+        <tr>
+          <td valign="top">unless</td>
+          <td style="text-align: center;">bool</td>
+          <td>
+          </td>
+          <td style="text-align: center;">False</td>
+        </tr>
+        <tr>
+          <td valign="top">verbose</td>
+          <td style="text-align: center;">bool</td>
+          <td>
+          </td>
+          <td style="text-align: center;">False</td>
+        </tr>
+      </table>
+    </div>
+    <h3>Nested Elements:</h3>
+    <!--Collection-->
+    <h4>
+      <a id="stringparams">
+      </a>
+            &lt;stringparams&gt;
+        </h4>
+    <div class="nested-element"> A list of <a href="../elements/broloco.NAntTasks.StringParam.html">StringParam</a> (attribute) parameters. <h5>&lt;stringparam&gt;</h5><div class="nested-element"><p> Describes a string parameter to a custom scripted task. </p><h3>Parameters</h3><div class="table"><table><tr><th>Attribute</th><th style="text-align: center;">Type</th><th>Description</th><th style="text-align: center;">Required</th></tr><tr><td valign="top" class="required">name</td><td style="text-align: center;">string</td><td> The parameter name. </td><td style="text-align: center;">True</td></tr><tr><td valign="top">required</td><td style="text-align: center;">bool</td><td> Specifies if the parameter is required (default is true) </td><td style="text-align: center;">False</td></tr></table></div></div><h5>&lt;/stringparam&gt;</h5></div>
+    <h4>&lt;/stringparams&gt;</h4>
+    <!--Collection-->
+    <h4>
+      <a id="nodeparams">
+      </a>
+            &lt;nodeparams&gt;
+        </h4>
+    <div class="nested-element"> A list of <a href="../elements/broloco.NAntTasks.NodeParam.html">NodeParam</a> (xml node) parameters. <h5>&lt;nodeparam&gt;</h5><div class="nested-element"><p> Describes an XML-Node parameter to a custom scripted task. </p><h3>Parameters</h3><div class="table"><table><tr><th>Attribute</th><th style="text-align: center;">Type</th><th>Description</th><th style="text-align: center;">Required</th></tr><tr><td valign="top" class="required">name</td><td style="text-align: center;">string</td><td> The parameter name. </td><td style="text-align: center;">True</td></tr><tr><td valign="top">required</td><td style="text-align: center;">bool</td><td> Specifies if the parameter is required (default is true) </td><td style="text-align: center;">False</td></tr></table></div></div><h5>&lt;/nodeparam&gt;</h5></div>
+    <h4>&lt;/nodeparams&gt;</h4>
+    <!--Element-->
+    <h4>
+      <a id="do">
+      </a>
+                    &lt;do&gt;
+                </h4>
+    <div class="nested-element"> The tasks to script <p /></div>
+    <h4>
+      <a id="do">
+      </a>
+                    &lt;/do&gt;
+                </h4>
+    <h3>Examples</h3>
+    <ul class="examples">
+      <li>
+        <p> Create a custom task that takes two parameters. Parameter 1 can be set to 'echo' or 'fail', and parameter 2 is the message to echo/fail. <pre class="code">
+       &lt;taskdef name="echoFail" &gt;
+
+         &lt;stringparams&gt;
+           &lt;stringparam name="task" /&gt;
+           &lt;stringparam name="message" required="false" /&gt;
+         &lt;/stringparams&gt;
+
+         &lt;do&gt;
+           &lt;property name="customMessage" value="__message__" /&gt;
+           &lt;if test="${customMessage == ''}" &gt;
+             &lt;property name="customMessage" value="this is a default message" /&gt;
+           &lt;/if&gt;
+           &lt;__task__ message="${customMessage}" /&gt;
+         &lt;/do&gt;
+
+       &lt;/taskdef&gt;
+       ...
+       &lt;!-- echos the default message --&gt;
+       &lt;echoFail task="echo" /&gt;
+       ...
+       &lt;echoFail task="fail" message="this will fail the build" /&gt;
+     </pre></p>
+      </li>
+      <li>
+        <p> Create a custom task that takes a list of source files, target files, and a list of tasks to execute when the target files are not up to date. <pre class="code">
+       &lt;taskdef name="execIfNotUpToDate" &gt;
+
+         &lt;nodeparams&gt;
+           &lt;nodeparam name="sourceFiles" /&gt;
+           &lt;nodeparam name="targetFiles" /&gt;
+           &lt;nodeparam name="do" /&gt;
+         &lt;/nodeparams&gt;
+
+         &lt;do&gt;
+           &lt;uptodate property="execIfNotUpToDate.uptodate"&gt;
+             &lt;sourcefiles&gt;
+               &lt;__sourceFiles__/&gt;
+             &lt;/sourcefiles&gt;
+             &lt;targetfiles&gt;
+               &lt;__targetFiles__/&gt;
+             &lt;/targetfiles&gt;
+           &lt;/uptodate&gt;
+           &lt;if test="${not execIfNotUpToDate.uptodate}" &gt;
+             &lt;__do__/&gt;
+           &lt;/if&gt;
+         &lt;/do&gt;
+
+       &lt;/taskdef&gt;
+       ...
+       &lt;!-- echos the a message if the files are not up to date --&gt;
+       &lt;execIfNotUpToDate&gt;
+
+         &lt;sourceFiles&gt;
+           &lt;include name="*.cs" /&gt;
+         &lt;/sourceFiles&gt;
+
+         &lt;targetFiles&gt;
+           &lt;include name="myAssembly.dll" /&gt;
+         &lt;/targetFiles&gt;
+
+         &lt;do&gt;
+           &lt;echo message="work needs done" /&gt;
+         &lt;/do&gt;
+
+       &lt;/execIfNotUpToDate&gt;
+     </pre></p>
+      </li>
+    </ul>
+    <h3>Requirements</h3>
+    <div style="margin-left: 20px;">
+      <b>Assembly:</b> broloco.NAntTasks (1.1.0.1)
+            </div>
+  </body>
+</html>
