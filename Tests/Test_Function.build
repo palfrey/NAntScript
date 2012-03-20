@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<project name="Test_Function">
+	<funcdef name="testFunc" namespace="tests">
+		<funcparams>
+			<funcparam name="test" type="string" />
+		</funcparams>
+		<do>
+			<property name="__$return__" value="__test__" />
+		</do>
+	</funcdef>
+	<fail unless="${tests::testFunc('foo') == 'foo'}" />
+
+	<funcdef name="testBoolFunc" namespace="tests" returnType="bool">
+		<do>
+			<property name="__$return__" value="True" />
+		</do>
+	</funcdef>
+	<fail unless="${tests::testBoolFunc()}" />
+
+	<funcdef name="testIntFunc" namespace="tests" returnType="int">
+		<funcparams>
+			<funcparam name="test" type="int" />
+			<funcparam name="blah" type="bool" />
+		</funcparams>
+		<do>
+			<property name="__$return__" value="__test__" />
+		</do>
+	</funcdef>
+	<fail unless="${tests::testIntFunc(10, true) == 10}" />
+</project>
