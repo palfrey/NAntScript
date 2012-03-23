@@ -18,7 +18,7 @@ namespace broloco.NAntTasks
     /// <remarks>
     ///   <para>
     ///     Compiles a collection of build files containing <see cref="TaskDefTask" /> and 
-    ///       <see cref="FuncDefTask" />definitions.
+    ///       <see cref="FuncDefTask" /> definitions.
     ///       Each build file should contain a &lt;project&gt; top-level node, with taskdef/funcdef nodes
     ///       as child elements.
     ///       The compiled assembly's tasks are loaded.
