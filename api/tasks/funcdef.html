@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <!-- Documenting T:broloco.NAntTasks.FuncDefTask-->
+  <head>
+    <meta http-equiv="Content-Language" content="en-ca" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../style.css" />
+    <title>&lt;funcdef&gt; Task</title>
+  </head>
+  <body>
+    <table width="100%" border="0" cellspacing="0" cellpadding="2" class="NavBar">
+      <tr>
+        <td class="NavBar-Cell">
+          <a href="http://code.google.com/p/nantscript">
+            <b>NAntScript</b>
+          </a>
+          <img alt="-&gt;" src="../images/arrow.gif" />
+          <a href="../index.html">Help</a>
+          <img alt="-&gt;" src="../images/arrow.gif" />
+          <a href="../tasks/index.html">Task Reference</a>
+          <img alt="-&gt;" src="../images/arrow.gif" /> &lt;funcdef&gt;</td>
+        <td class="NavBar-Cell" align="right">
+                        v1.1.0.1</td>
+      </tr>
+    </table>
+    <h1>&lt;funcdef&gt;</h1>
+    <p class="topicstatus">[This is preliminary documentation and subject to change.]</p>
+    <p> Creates a custom function containing NAnt tasks. </p>
+    <p> Define a function by specifying a name, a namespace and a list of function parameters. A custom function is created that runs each of the tasks in the &lt;do/&gt; parameter replacing function parameters before execution. </p>
+    <p> A special parameter __$return__ must be set during the &lt;do/&gt; block that is the return value of the function. Default type of this is 'string', but 'int' and 'bool' functions can also be written by setting a attribute returnType on the funcdef. </p>
+    <p> Function parameters are referenced in the &lt;do/&gt; section using the syntax <i xmlns="">__parameter name__</i>. They are all required, and are given to the function in the same order as they are in the funcparams list. The type of a parameter defaults to 'string', but 'int' and 'bool' parameters can also be done by setting the 'type' attribute on the funcparam. </p>
+    <h3>Parameters</h3>
+    <div class="table">
+      <table>
+        <tr>
+          <th>Attribute</th>
+          <th style="text-align: center;">Type</th>
+          <th>Description</th>
+          <th style="text-align: center;">Required</th>
+        </tr>
+        <tr>
+          <td valign="top" class="required">name</td>
+          <td style="text-align: center;">string</td>
+          <td> The name for the custom function </td>
+          <td style="text-align: center;">True</td>
+        </tr>
+        <tr>
+          <td valign="top" class="required">namespace</td>
+          <td style="text-align: center;">string</td>
+          <td> The namespace for the custom function </td>
+          <td style="text-align: center;">True</td>
+        </tr>
+        <tr>
+          <td valign="top">returnType</td>
+          <td style="text-align: center;">string</td>
+          <td> The return type for the function (defaults to string) </td>
+          <td style="text-align: center;">False</td>
+        </tr>
+        <tr>
+          <td valign="top">failonerror</td>
+          <td style="text-align: center;">bool</td>
+          <td>
+          </td>
+          <td style="text-align: center;">False</td>
+        </tr>
+        <tr>
+          <td valign="top">if</td>
+          <td style="text-align: center;">bool</td>
+          <td>
+          </td>
+          <td style="text-align: center;">False</td>
+        </tr>
+        <tr>
+          <td valign="top">unless</td>
+          <td style="text-align: center;">bool</td>
+          <td>
+          </td>
+          <td style="text-align: center;">False</td>
+        </tr>
+        <tr>
+          <td valign="top">verbose</td>
+          <td style="text-align: center;">bool</td>
+          <td>
+          </td>
+          <td style="text-align: center;">False</td>
+        </tr>
+      </table>
+    </div>
+    <h3>Nested Elements:</h3>
+    <!--Collection-->
+    <h4>
+      <a id="funcparams">
+      </a>
+            &lt;funcparams&gt;
+        </h4>
+    <div class="nested-element"> A list of <a href="../elements/broloco.NAntTasks.FuncParam.html">FuncParam</a> (attribute) parameters. <h5>&lt;funcparam&gt;</h5><div class="nested-element"><p> Describes a func parameter to a custom scripted function </p><h3>Parameters</h3><div class="table"><table><tr><th>Attribute</th><th style="text-align: center;">Type</th><th>Description</th><th style="text-align: center;">Required</th></tr><tr><td valign="top" class="required">name</td><td style="text-align: center;">string</td><td> The parameter name. </td><td style="text-align: center;">True</td></tr><tr><td valign="top">type</td><td style="text-align: center;">string</td><td> The parameter type (defaults to string) </td><td style="text-align: center;">False</td></tr></table></div></div><h5>&lt;/funcparam&gt;</h5></div>
+    <h4>&lt;/funcparams&gt;</h4>
+    <!--Element-->
+    <h4>
+      <a id="do">
+      </a>
+                    &lt;do&gt;
+                </h4>
+    <div class="nested-element"> The tasks to script <p /></div>
+    <h4>
+      <a id="do">
+      </a>
+                    &lt;/do&gt;
+                </h4>
+    <h3>Examples</h3>
+    <ul class="examples">
+      <li>
+        <p> Create a custom function that takes one parameter, and which returns that value. <pre class="code">
+  &lt;funcdef name="testFunc" namespace="tests"&gt;
+      &lt;funcparams&gt;
+          &lt;funcparam name="test" type="string" /&gt;
+      &lt;/funcparams&gt;
+      &lt;do&gt;
+          &lt;property name="__$return__" value="__test__" /&gt;
+      &lt;/do&gt;
+  &lt;/funcdef&gt;
+  &lt;fail unless="${tests::testFunc('foo') == 'foo'}" /&gt;
+  </pre></p>
+      </li>
+    </ul>
+    <h3>Requirements</h3>
+    <div style="margin-left: 20px;">
+      <b>Assembly:</b> broloco.NAntTasks (1.1.0.1)
+            </div>
+  </body>
+</html>
