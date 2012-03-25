@@ -142,7 +142,8 @@ namespace broloco.NAntTasks
             {
                 customTaskCode +=  "        xml = xml.Replace(\"__" + funcParam.ParameterName + "__\", _" + funcParam.ParameterName + ".ToString());\n";
             }
-			customTaskCode +=  "        xml = xml.Replace(\"__$return__\", \"_ReturnParam\");\n";
+            customTaskCode +=  string.Format("        if (xml.IndexOf(\"__$return__\")==-1) throw new Exception(\"No __$return__ in do section of {0}::{1}!\");\n", Namespace, TagName);
+            customTaskCode +=  "        xml = xml.Replace(\"__$return__\", \"_ReturnParam\");\n";
             customTaskCode +=  "        scriptDom.LoadXml(xml);\n";
 
             customTaskCode +=  "        Project.Log(Level.Verbose, \"Generated script: \" + scriptDom.InnerXml);\n";
