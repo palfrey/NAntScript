@@ -7,12 +7,17 @@
         <sources>
             <include name="Test_MultipleScript_Task1.taskdef" />
             <include name="Test_MultipleScript_Task2.taskdef" />
+            <include name="Test_Function.taskdef" />
         </sources>
     </tdc>
 
     <if test="${not file::is-assembly(path::get-temp-path() + '/CompiledMultipleScripts.dll')}" >
         <fail message="assembly not created" />
     </if>
+	
+	<loadtasks assembly="${path::get-temp-path()}/CompiledMultipleScripts.dll" />
+
+	<fail unless="${tests::testFunc('foo') == 'foo'}" />
 
     <property name="sp1Value" value="" />
     <property name="sp2Value" value="" />

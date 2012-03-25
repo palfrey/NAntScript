@@ -12,8 +12,8 @@ namespace broloco.NAntTasks
     /// </summary>	
     /// <remarks>
     ///   <para>
-    ///     Define a task by specifying a name, a namespace and a list of function parameters.
-    ///     A custom task is created that runs each of the tasks in the &lt;do/&gt; parameter replacing
+    ///     Define a function by specifying a name, a namespace and a list of function parameters.
+    ///     A custom function is created that runs each of the tasks in the &lt;do/&gt; parameter replacing
     ///     function parameters before execution.
     ///   </para>
     ///   <para>
@@ -24,8 +24,8 @@ namespace broloco.NAntTasks
     ///   <para>
     ///      Function parameters are referenced in the &lt;do/&gt; section using the syntax <i>__parameter name__</i>.
     ///      They are all required, and are given to the function in the same order as they are in the funcparams list.
-    ///      The type of a parameter defaults to 'string', but 'int' and 'bool' parameters can also be done by setting the
-    ///      'type' attribute on the funcparam.
+    ///      The type of a parameter defaults to 'string', but 'int' and 'bool' parameters can also be done by setting
+    ///      the 'type' attribute on the funcparam.
     ///   </para>
     /// </remarks>
     /// <example>
@@ -109,8 +109,7 @@ namespace broloco.NAntTasks
         public string GenerateCSharpCode()
         {
             string customTaskCode = "";
-
-            customTaskCode +=  "    static private string _originalXml = XmlConvert.DecodeName(\"" + XmlConvert.EncodeLocalName(_tasks.Xml.OuterXml) + "\");\n";
+			customTaskCode +=  "    static private string _original"+ TagName +"Xml = XmlConvert.DecodeName(\"" + XmlConvert.EncodeLocalName(_tasks.Xml.OuterXml) + "\");\n";
 			
 			customTaskCode +=  "    [Function(\""+_tagName + "\")]\n";			
 
@@ -130,8 +129,8 @@ namespace broloco.NAntTasks
 			
             customTaskCode +=  ")\n";
             customTaskCode +=  "    {\n";
-            customTaskCode +=  "        Project.Log(Level.Verbose, \"Original script : \" + _originalXml);\n";
-            customTaskCode +=  "        string xml = _originalXml;\n";
+            customTaskCode +=  "        Project.Log(Level.Verbose, \"Original script : \" + _original"+ TagName +"Xml);\n";
+            customTaskCode +=  "        string xml = _original"+ TagName +"Xml;\n";
 
             customTaskCode +=  "        XmlDocument scriptDom = new XmlDocument();\n";
             customTaskCode +=  "        scriptDom.LoadXml(xml);\n";
@@ -177,7 +176,7 @@ namespace broloco.NAntTasks
             string customTaskCode = "";
             customTaskCode +=  "<script language='C#' prefix=\""+_namespace +"\" >\n";
             customTaskCode +=  "<imports> <import namespace=\"System.Xml\" /> <import namespace=\"NAnt.Core.Types\" /> </imports> <code> <![CDATA[\n";
-            customTaskCode += GenerateCSharpCode();
+			customTaskCode += GenerateCSharpCode();
             customTaskCode += "]]" + "></code></script>";
 
             XmlDocument xmlScriptTask = new XmlDocument();

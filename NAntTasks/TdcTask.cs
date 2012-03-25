@@ -1,6 +1,6 @@
-
 using System;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
@@ -13,12 +13,13 @@ namespace broloco.NAntTasks
 {
 
     /// <summary>
-    /// Compiles a collection of taskdef files into an assembly.
+    /// Compiles a collection of taskdef/funcdef files into an assembly.
     /// </summary>
     /// <remarks>
     ///   <para>
-    ///     Compiles a collection of build files containing <see cref="TaskDefTask" /> definitions.
-    ///       Each build file should contain a &lt;project&gt; top-level node, with taskdef nodes
+    ///     Compiles a collection of build files containing <see cref="TaskDefTask" /> and 
+    ///       <see cref="FuncDefTask" />definitions.
+    ///       Each build file should contain a &lt;project&gt; top-level node, with taskdef/funcdef nodes
     ///       as child elements.
     ///       The compiled assembly's tasks are loaded.
     ///   </para>
@@ -131,7 +132,8 @@ namespace broloco.NAntTasks
         {
             if (!IsOutputUpToDate())
             {
-                string source =   "using System.Xml;\n"
+                string source =   "using System;\n"
+                	            + "using System.Xml;\n"
                                 + "using NAnt.Core;\n"
                                 + "using NAnt.Core.Attributes;\n"
                                 + "using NAnt.Core.Types;\n";
@@ -148,7 +150,35 @@ namespace broloco.NAntTasks
                         TaskDefTask taskDef = (TaskDefTask) Project.CreateTask(taskXml);
                         source += taskDef.GenerateCSharpCode() + "\n";
                     }
+				}
+				
+				Dictionary<string, List<FuncDefTask>> funcs = new Dictionary<string, List<FuncDefTask>>();
+
+                foreach (string fileName in Sources.FileNames)
+                {
+                    XmlDocument tasksXml = new XmlDocument();
+                    tasksXml.Load(fileName);
+                    UseDefaultNamespace(tasksXml, Project);
+
+                    foreach (XmlNode taskXml in tasksXml.SelectNodes("/*/*[local-name()='funcdef']"))
+                    {
+                        Log(Level.Verbose, "generating task from: " + taskXml.OuterXml);
+                        FuncDefTask funcDef = (FuncDefTask) Project.CreateTask(taskXml);
+						if (!funcs.ContainsKey(funcDef.Namespace))
+							funcs[funcDef.Namespace] = new List<FuncDefTask>();
+						funcs[funcDef.Namespace].Add(funcDef);
+                    }
                 }
+				
+				foreach(string ns in funcs.Keys)
+				{
+					source += string.Format("[FunctionSet(\"{0}\", \"{0}\")]", ns);
+					source += string.Format("public class {0}: FunctionSetBase {{\n", ns);
+				    source += string.Format("public {0}(Project project, PropertyDictionary properties) : base(project, properties) {{}}\n", ns);
+					foreach(FuncDefTask fd in funcs[ns])
+                    	source += fd.GenerateCSharpCode() + "\n";
+					source += "}\n";
+				}
 
                 Log(Level.Verbose, source);
                 CompileSource(source);
