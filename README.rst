@@ -4,6 +4,8 @@ NAntScript
 NAntScript provides custom tasks that allow you to script other custom tasks
 using regular NAnt script.
 
+Main documentation is at http://palfrey.github.com/NAntScript/
+
 How to use NAntScript tasks in NAnt?
 ------------------------------------
 In order to use NAntScript tasks in NAnt, you can use one of the following
