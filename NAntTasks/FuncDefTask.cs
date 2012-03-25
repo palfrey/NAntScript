@@ -129,6 +129,7 @@ namespace broloco.NAntTasks
 			
             customTaskCode +=  ")\n";
             customTaskCode +=  "    {\n";
+            customTaskCode +=  "        Project.Log(Level.Verbose, \"Running custom script\");\n";
             customTaskCode +=  "        Project.Log(Level.Verbose, \"Original script : \" + _original"+ TagName +"Xml);\n";
             customTaskCode +=  "        string xml = _original"+ TagName +"Xml;\n";
 

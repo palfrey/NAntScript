@@ -202,7 +202,7 @@ namespace broloco.NAntTasks
             customTaskCode +=  "    protected override void ExecuteTask()\n";
             customTaskCode +=  "    {\n";
 
-            customTaskCode +=  "        Log(Level.Info, \"Running custom script\");\n";
+            customTaskCode +=  "        Log(Level.Verbose, \"Running custom script\");\n";
             customTaskCode +=  "        Log(Level.Verbose, \"Original script : \" + _originalXml);\n";
             customTaskCode +=  "        string xml = _originalXml;\n";
 
