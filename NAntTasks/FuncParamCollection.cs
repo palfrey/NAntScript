@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections;
 
@@ -6,7 +5,6 @@ using NAnt.Core;
 
 namespace broloco.NAntTasks
 {
-
     /// <summary>
     /// A typed FuncParam collection.
     /// </summary>

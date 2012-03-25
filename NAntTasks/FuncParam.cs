@@ -9,7 +9,7 @@ namespace broloco.NAntTasks
 {
 
     /// <summary>
-    /// Describes a func parameter to a custom scripted task.
+    /// Describes a func parameter to a custom scripted function
     /// </summary>
     [ElementName("FuncParam")]
     public class FuncParam : Element
@@ -25,9 +25,9 @@ namespace broloco.NAntTasks
             set { _parameterName = value; }
         }
 
-        private string  _type  = string.Empty;
+        private string  _type  = "string";
         /// <summary>
-        /// The parameter name.
+        /// The parameter type (defaults to string)
         /// </summary>
         [TaskAttribute("type")]
         public string Type

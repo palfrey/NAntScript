@@ -10,11 +10,45 @@ namespace broloco.NAntTasks
     /// <summary>
     /// Creates a custom function containing NAnt tasks.
     /// </summary>	
+    /// <remarks>
+    ///   <para>
+    ///     Define a task by specifying a name, a namespace and a list of function parameters.
+    ///     A custom task is created that runs each of the tasks in the &lt;do/&gt; parameter replacing
+    ///     function parameters before execution.
+    ///   </para>
+    ///   <para>
+    /// 	A special parameter __$return__ must be set during the &lt;do/&gt; block that is the return value
+    ///     of the function. Default type of this is 'string', but 'int' and 'bool' functions can also be written
+    ///     by setting a attribute returnType on the funcdef.
+    ///   </para>
+    ///   <para>
+    ///      Function parameters are referenced in the &lt;do/&gt; section using the syntax <i>__parameter name__</i>.
+    ///      They are all required, and are given to the function in the same order as they are in the funcparams list.
+    ///      The type of a parameter defaults to 'string', but 'int' and 'bool' parameters can also be done by setting the
+    ///      'type' attribute on the funcparam.
+    ///   </para>
+    /// </remarks>
+    /// <example>
+    ///   <para>
+    ///     Create a custom function that takes one parameter, and which returns that value.
+    ///   <code>
+    ///     <![CDATA[
+    ///		<funcdef name="testFunc" namespace="tests">
+    ///			<funcparams>
+    ///				<funcparam name="test" type="string" />
+    ///			</funcparams>
+    ///			<do>
+    ///				<property name="__$return__" value="__test__" />
+    ///			</do>
+    ///		</funcdef>
+    ///		<fail unless="${tests::testFunc('foo') == 'foo'}" />
+    ///     ]]>
+    ///   </code>
+    ///   </para>
+    /// </example>
 	[TaskName("funcdef")]
     public class FuncDefTask: Task
     {
-
-	
 		private string _namespace;	
 		/// <summary>
         /// The namespace for the custom function
@@ -70,7 +104,7 @@ namespace broloco.NAntTasks
 		}
 		
         /// <summary>
-        /// Generates C# code for the task
+        /// Generates C# code for the function
         /// </summary>
         public string GenerateCSharpCode()
         {
@@ -102,8 +136,8 @@ namespace broloco.NAntTasks
             customTaskCode +=  "        XmlDocument scriptDom = new XmlDocument();\n";
             customTaskCode +=  "        scriptDom.LoadXml(xml);\n";
 
-            // generate string replacements for each stringParam
             customTaskCode +=  "        xml = scriptDom.OuterXml;\n";
+            // generate string replacements for each funcParam
             foreach (FuncParam funcParam in FuncParams)
             {
                 customTaskCode +=  "        xml = xml.Replace(\"__" + funcParam.ParameterName + "__\", _" + funcParam.ParameterName + ".ToString());\n";
