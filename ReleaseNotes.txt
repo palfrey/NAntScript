@@ -1,9 +1,12 @@
+Build 1.2.0
+===========
+ * New maintainer (Tom Parker <palfrey@tevp.net>)
+ * Add scritped function support
 
 Build 1.1.0.0
 =============
 
 Bug fix - Fixed running tdc against XML files containing namespaces.
-
 
 Build 1.0.0.0
 =============
