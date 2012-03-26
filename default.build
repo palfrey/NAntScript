@@ -163,7 +163,7 @@
                             <!-- set the name and version of the product for which docs are generated -->
                             <property name="ProductName" value="NAntScript" />
                             <property name="ProductVersion" value="${project.version}" />
-                            <property name="ProductUrl" value="http://code.google.com/p/nantscript" />
+                            <property name="ProductUrl" value="http://palfrey.github.com/NAntScript/" />
                             <property name="Preliminary" value="${not(project.config == 'release')}" />
                             <property name="DocumentAttributes" value="True" />
                             <property name="IncludeAssemblyVersion" value="True" />
